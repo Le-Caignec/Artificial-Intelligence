@@ -1,2 +1,2 @@
-# Intelligence-artificial
+# Artificial-Intelligence
 TP1
