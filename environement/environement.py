@@ -3,7 +3,8 @@ from time import sleep
 from tkinter import *
 from PIL import Image,ImageTk
 from threading import *
-from random import uniform
+from random import uniform, randint
+
 
 class Environement(Thread):
 
@@ -34,7 +35,7 @@ class Environement(Thread):
 
     def CreatGrid(self):
         for ligne in range(3, 8):
-            for colonne in range(3, 8):
+            for colonne in range(5):
                 Frame(self.fenetre, width=200, height=120, borderwidth=2, relief=GROOVE).grid(row=ligne, column=colonne)
 
     def DrawScore(self):
@@ -44,15 +45,16 @@ class Environement(Thread):
 
     #Fonction lancée lorsque le thread est start()
     def run(self):
+        self.PutAgent(randint(3, 7), randint(0, 4))
         for row in range(3, 8):
-            for column in range(3, 8):
+            for column in range(5):
                 if uniform(0, 3) <= 1:
                     self.PutDiamant(row, column)
                 if uniform(0, 3) <= 1:
                     self.PutPierre(row, column)
 
     def PutDiamant(self, row, column):
-        image = Image.open('diamant.png').resize((60, 45), Image.ANTIALIAS)
+        image = Image.open('ressources/diamant.png').resize((60, 45), Image.ANTIALIAS)
         photo = ImageTk.PhotoImage(image)
         label = Label(self.fenetre, image=photo)
         label.config(width=50, height=30)
@@ -60,9 +62,18 @@ class Environement(Thread):
         label.grid(row=row, column=column, sticky=NW, padx=2, pady=8)
 
     def PutPierre(self, row, column):
-        image = Image.open('pierre.png').resize((50, 40), Image.ANTIALIAS)
+        image = Image.open('ressources/pierre.png').resize((50, 40), Image.ANTIALIAS)
         photo = ImageTk.PhotoImage(image)
         label = Label(self.fenetre, image=photo)
         label.config(width=50, height=30)
         label.image = photo
         label.grid(row=row, column=column, sticky=SW, padx=18, pady=18)
+
+
+    def PutAgent(self, row, column):
+        image = Image.open('ressources/agent.png').resize((50, 50), Image.ANTIALIAS)
+        photo = ImageTk.PhotoImage(image)
+        label = Label(self.fenetre, image=photo)
+        label.config(width=50, height=50)
+        label.image = photo
+        label.grid(row=row, column=column, sticky=E, padx=10)
