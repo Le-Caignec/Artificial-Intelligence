@@ -1,7 +1,7 @@
 from tkinter import *
 from PIL import ImageTk, Image
 from agent import Captor
-
+from environement import CLI_Environement
 
 class Agent:
 
@@ -11,3 +11,9 @@ class Agent:
 
     def AfficherAgent(self):
         print("AGENT")
+
+    def algoNonInformé(self):
+
+        plan_action = []
+
+        return plan_action

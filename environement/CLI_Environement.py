@@ -22,9 +22,9 @@ class CLI_Environement:
         self.score = Score
 
     def SetCase(self, case, x_position, y_position):
-        if case.diamond is not None:
+        if case.diamond is True:
             self.grid[x_position][y_position].diamond = case.diamond
-        if case.dust is not None:
+        if case.dust is True:
             self.grid[x_position][y_position].dust = case.dust
 
     def Afficher(self):
@@ -44,6 +44,9 @@ class CLI_Environement:
     def ClearGrid(self): 
         self.grid = [[Case for i in range(5)] for k in range(5)]
 
+    def getGrid(self):
+        return self.grid
+
     def UpdateScore(self, score):
         self.score = score
 
@@ -52,7 +55,9 @@ class CLI_Environement:
         for row in range(5):
             for column in range(5):
                 if uniform(0, 3) <= 1:
-                    self.SetCase(Case(diamond, None, None), diamond.x_position, diamond.y_position)
+                    OneCase = Case(row, column, True, False)
+                    self.SetCase(OneCase, row, column)
                 if uniform(0, 3) <= 1:
-                    self.SetCase(Case(None, dust, None), dust.x_position, dust.y_position)
+                    OneCase = Case(row, column, False, True)
+                    self.SetCase(OneCase, row, column)
 
