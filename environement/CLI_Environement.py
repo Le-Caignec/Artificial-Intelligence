@@ -1,16 +1,21 @@
-from struct import Struct
+from dataclasses import dataclass
+import agent.Agent
+import environement.Diamond
 from environement import Diamond, Dust
 from agent import Agent
 from random import uniform, randint
 
-class Case(Struct):
-    diamond = Diamond
-    dust = Dust
+@dataclass
+class Case:
+    diamond: Diamond
+    dust: Dust
+    agent: Agent
 
-class Score(Struct):
-    collected_diamond = int
-    aspirated_dust = int
-    aspirated_diamond = int
+@dataclass
+class Score:
+    collected_diamond: int = 0
+    aspirated_dust: int = 0
+    aspirated_diamond: int = 0
 
 class CLI_Environement:
 
@@ -18,15 +23,17 @@ class CLI_Environement:
         self.grid = [[Case for i in range(5)] for k in range(5)]
         self.score = Score
 
-    def SetCase(self, diamond, dust, x_position, y_position):
-        if diamond is not None:
-            self.grid[x_position][y_position].diamond = diamond
-        if dust is not None:
-            self.grid[x_position][y_position].dust = dust
+    def SetCase(self, case, x_position, y_position):
+        if case.diamond is not None:
+            self.grid[x_position][y_position].diamond = case.diamond
+        if case.dust is not None:
+            self.grid[x_position][y_position].dust = case.dust
+        if case.agent is not None:
+            self.grid[x_position][y_position].agent = case.agent
 
-    def AfficherGrid(self):
-        for row in len(self.grid):
-            for case in len(row):
+    def Afficher(self):
+        for row in range(5):
+            for case in range(5):
                 print("-----------CASE--------------")
                 case.dust.AfficherDust()
                 case.diamond.AfficherDiamond()
@@ -44,17 +51,14 @@ class CLI_Environement:
         self.score = score
 
     def GenerateGrid(self):
-        agent = Agent(self.fenetre, randint(3, 7), randint(0, 4))
-        agent.PutAgent()
-        for row in range(3, 8):
+        ag = agent.Agent.Agent(randint(0, 4), randint(0, 4))
+        self.SetCase(Case(None, None, ag), ag.x_position, ag.y_position)
+        for row in range(5):
             for column in range(5):
                 if uniform(0, 3) <= 1:
-                    diamond = Diamond(self.fenetre, row, column)
-                    diamond.PutDiamond()
-                    agent.captor.SetCase(diamond, None, row, column)
+                    diamond = environement.Diamond.Diamond(row, column)
+                    self.SetCase(Case(diamond, None, None), diamond.x_position, diamond.y_position)
                 if uniform(0, 3) <= 1:
-                    dust = Dust(self.fenetre, row, column)
-                    dust.PutDust()
-                    agent.captor.SetCase(None, dust, row, column)
-        # agent.captor.AfficherGrid()
+                    dust = environement.Dust.Dust(row, column)
+                    self.SetCase(Case(None, dust, None), dust.x_position, dust.y_position)
 

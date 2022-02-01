@@ -3,18 +3,9 @@ from PIL import Image, ImageTk
 
 class Diamond:
 
-    def __init__(self, fenetre, x_position, y_position):
-        self.fenetre = fenetre
+    def __init__(self, x_position, y_position):
         self.x_position = x_position
         self.y_position = y_position
-
-    def GUI_PutDiamond(self):
-        image = Image.open('ressources/diamant.png').resize((60, 45), Image.ANTIALIAS)
-        photo = ImageTk.PhotoImage(image)
-        label = Label(self.fenetre, image=photo)
-        label.config(width=50, height=30)
-        label.image = photo
-        label.grid(row=self.x_position, column=self.y_position, sticky=NW, padx=2, pady=8)
 
     def AfficherDiamond(self):
         print("-----------DIAMOND--------------")
