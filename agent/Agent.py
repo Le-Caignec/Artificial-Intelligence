@@ -9,3 +9,5 @@ class Agent:
         self.x_position = x_position
         self.y_position = y_position
 
+    def AfficherAgent(self):
+        print("AGENT")
