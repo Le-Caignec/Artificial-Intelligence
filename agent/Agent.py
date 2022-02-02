@@ -10,10 +10,10 @@ class Agent:
         self.y_position = y_position
 
     def AfficherAgent(self):
-        print("AGENT")
+        print("--------------AGENT-------------------")
+        print("- x_position : "+str(self.x_position))
+        print("- y_position : "+str(self.y_position))
 
     def algoNonInformé(self):
-
         plan_action = []
-
         return plan_action

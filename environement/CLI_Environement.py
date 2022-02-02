@@ -4,10 +4,10 @@ from agent.Agent import *
 
 @dataclass
 class Case:
-    x_position: int
-    y_position: int
-    diamond: bool
-    dust: bool
+    x_position: int = 0
+    y_position: int = 0
+    diamond: bool = False
+    dust: bool = False
 
 @dataclass
 class Score:
@@ -18,7 +18,7 @@ class Score:
 class CLI_Environement:
 
     def __init__(self):
-        self.grid = [[Case for i in range(5)] for k in range(5)]
+        self.grid = [[Case() for i in range(5)] for k in range(5)]
         self.score = Score
 
     def SetCase(self, case, x_position, y_position):
@@ -28,6 +28,7 @@ class CLI_Environement:
             self.grid[x_position][y_position].dust = case.dust
 
     def Afficher(self):
+        print("--------------GRILLE-------------------")
         print("[")
         for x_position in range(5):
             for y_position in range(5):
@@ -36,10 +37,8 @@ class CLI_Environement:
         print("]")
 
     def ClearCase(self, x_position, y_position):
-        if self.grid[x_position][y_position].diamond is True:
-            self.grid[x_position][y_position].diamond = False
-        if self.grid[x_position][y_position].dust is True:
-            self.grid[x_position][y_position].dust = False
+        self.grid[x_position][y_position].diamond = False
+        self.grid[x_position][y_position].dust = False
 
     def ClearGrid(self): 
         self.grid = [[Case for i in range(5)] for k in range(5)]
@@ -51,7 +50,7 @@ class CLI_Environement:
         self.score = score
 
     def GenerateGrid(self):
-        Agent(randint(0, 4), randint(0, 4))
+        Agent(randint(0, 4), randint(0, 4)).AfficherAgent()
         for row in range(5):
             for column in range(5):
                 if uniform(0, 3) <= 1:
@@ -60,4 +59,3 @@ class CLI_Environement:
                 if uniform(0, 3) <= 1:
                     OneCase = Case(row, column, False, True)
                     self.SetCase(OneCase, row, column)
-
