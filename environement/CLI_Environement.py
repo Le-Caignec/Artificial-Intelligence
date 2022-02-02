@@ -21,11 +21,11 @@ class CLI_Environement:
         self.grid = [[Case() for i in range(5)] for k in range(5)]
         self.score = Score
 
-    def SetCase(self, case, x_position, y_position):
+    def SetCase(self, case):
         if case.diamond is True:
-            self.grid[x_position][y_position].diamond = case.diamond
+            self.grid[case.x_position][case.y_position].diamond = case.diamond
         if case.dust is True:
-            self.grid[x_position][y_position].dust = case.dust
+            self.grid[case.x_position][case.y_position].dust = case.dust
 
     def Afficher(self):
         print("--------------GRILLE-------------------")
@@ -41,21 +41,26 @@ class CLI_Environement:
         self.grid[x_position][y_position].dust = False
 
     def ClearGrid(self): 
-        self.grid = [[Case for i in range(5)] for k in range(5)]
-
-    def getGrid(self):
-        return self.grid
+        self.grid = [[Case() for i in range(5)] for k in range(5)]
 
     def UpdateScore(self, score):
         self.score = score
 
-    def GenerateGrid(self):
+    def GenerateNewGrid(self):
         Agent(randint(0, 4), randint(0, 4)).AfficherAgent()
         for row in range(5):
             for column in range(5):
                 if uniform(0, 3) <= 1:
-                    OneCase = Case(row, column, True, False)
-                    self.SetCase(OneCase, row, column)
+                    one_case = Case(row, column, True, False)
+                    self.SetCase(one_case)
                 if uniform(0, 3) <= 1:
-                    OneCase = Case(row, column, False, True)
-                    self.SetCase(OneCase, row, column)
+                    one_case = Case(row, column, False, True)
+                    self.SetCase(one_case)
+
+    def GenerateNewCase(self, x_position, y_position):
+        if uniform(0, 3) <= 1:
+            one_case = Case(x_position, y_position, True, False)
+            self.SetCase(one_case)
+        if uniform(0, 3) <= 1:
+            one_case = Case(x_position, y_position, False, True)
+            self.SetCase(one_case)
