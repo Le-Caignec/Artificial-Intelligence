@@ -9,23 +9,11 @@ class Case:
     diamond: bool = False
     dust: bool = False
 
-@dataclass
-class Score:
-    collected_diamond: int = 0
-    aspirated_dust: int = 0
-    aspirated_diamond: int = 0
 
 class CLI_Environement:
 
     def __init__(self):
         self.grid = [[Case() for i in range(5)] for k in range(5)]
-        self.score = Score
-
-    def SetCase(self, case):
-        if case.diamond is True:
-            self.grid[case.x_position][case.y_position].diamond = case.diamond
-        if case.dust is True:
-            self.grid[case.x_position][case.y_position].dust = case.dust
 
     def Afficher(self):
         print("--------------GRILLE-------------------")
@@ -53,24 +41,22 @@ class CLI_Environement:
     def ClearGrid(self): 
         self.grid = [[Case() for i in range(5)] for k in range(5)]
 
-    def UpdateScore(self, score):
-        self.score = score
 
     def GenerateNewGrid(self):
-        Agent(randint(0, 4), randint(0, 4)).AfficherAgent()
         for row in range(5):
             for column in range(5):
+                #ajout d'un diamond
                 if uniform(0, 3) <= 1:
-                    one_case = Case(row, column, True, False)
-                    self.SetCase(one_case)
+                    if self.grid[row][column].dust:
+                        one_case = Case(row, column, True, True)
+                    else: 
+                        one_case = Case(row, column, True, False)
+                    self.grid[one_case.x_position][one_case.y_position] = one_case
+                #ajout de Dust
                 if uniform(0, 3) <= 1:
-                    one_case = Case(row, column, False, True)
-                    self.SetCase(one_case)
+                    if self.grid[row][column].diamond:
+                        one_case = Case(row, column, True, True)
+                    else: 
+                        one_case = Case(row, column, False, True)
+                    self.grid[one_case.x_position][one_case.y_position] = one_case
 
-    def GenerateNewCase(self, x_position, y_position):
-        if uniform(0, 3) <= 1:
-            one_case = Case(x_position, y_position, True, False)
-            self.SetCase(one_case)
-        if uniform(0, 3) <= 1:
-            one_case = Case(x_position, y_position, False, True)
-            self.SetCase(one_case)
