@@ -32,9 +32,19 @@ class CLI_Environement:
         print("[")
         for x_position in range(5):
             for y_position in range(5):
-                print("["+str(self.grid[x_position][y_position].diamond)+","+str(self.grid[x_position][y_position].dust)+"], ", end='')
+                print("["+self.isDiamond(x_position, y_position)+","+self.isDust(x_position, y_position)+"], ", end='')
             print("")
         print("]")
+
+    def isDiamond(self, x_position, y_position):
+        if self.grid[x_position][y_position].diamond:
+            return "Diams"
+        else : return "00000"
+
+    def isDust(self, x_position, y_position):
+        if self.grid[x_position][y_position].dust:
+            return "Dust"
+        else : return "0000"
 
     def ClearCase(self, x_position, y_position):
         self.grid[x_position][y_position].diamond = False
