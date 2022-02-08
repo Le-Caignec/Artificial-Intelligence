@@ -16,7 +16,7 @@ class CLI_Environement:
         self.grid = [[Case() for i in range(5)] for k in range(5)]
 
     def Afficher(self):
-        print("--------------GRILLE-------------------")
+        print("-----------------GRILLE-------------------")
         print("[")
         for y_position in range(5):
             for  x_position in range(5):
