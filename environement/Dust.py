@@ -14,7 +14,7 @@ class Dust:
         label = Label(self.fenetre, image=photo)
         label.config(width=50, height=30)
         label.image = photo
-        label.grid(row=self.x_position, column=self.y_position, sticky=SW, padx=18, pady=18)
+        label.grid(row=self.x_position+3, column=self.y_position, sticky=SW, padx=18, pady=18)
 
     def AfficherDust(self):
         print("-----------DUST--------------")

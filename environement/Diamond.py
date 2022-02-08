@@ -14,7 +14,7 @@ class Diamond:
         label = Label(self.fenetre, image=photo)
         label.config(width=50, height=30)
         label.image = photo
-        label.grid(row=self.x_position, column=self.y_position, sticky=NW, padx=2, pady=8)
+        label.grid(row=self.x_position+3, column=self.y_position, sticky=NW, padx=2, pady=8)
 
     def AfficherDiamond(self):
         print("-----------DIAMOND--------------")

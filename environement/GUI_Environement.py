@@ -1,4 +1,3 @@
-from tkinter import *
 from threading import *
 from agent.Agent import *
 from environement.Diamond import *
@@ -39,7 +38,6 @@ class GUI_Environement(Thread):
 
     #Fonction lancée lorsque le thread est start()
     def run(self):
-        print("ici la fonction lancé lors du thread")
         Agent(self.fenetre,0 ,0).GUI_PutAgent()
-        Diamond(self.fenetre,2,3).GUI_PutDiamond()
-        Dust(self.fenetre,4,4).GUI_PutDust()
+        Diamond(self.fenetre,0,0).GUI_PutDiamond()
+        Dust(self.fenetre,0,0).GUI_PutDust()

@@ -1,8 +1,6 @@
 from tkinter import *
 from PIL import ImageTk, Image
 
-
-
 class Agent:
 
     def __init__(self, fenetre, x_position, y_position):
@@ -16,6 +14,6 @@ class Agent:
         label = Label(self.fenetre, image=photo)
         label.config(width=50, height=50)
         label.image = photo
-        label.grid(row=self.x_position, column=self.y_position, sticky=E, padx=10)
+        label.grid(row=self.x_position+3, column=self.y_position, sticky=E, padx=10)
 
 
