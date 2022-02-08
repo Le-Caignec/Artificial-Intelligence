@@ -1,6 +1,6 @@
 from tkinter import *
 from PIL import ImageTk, Image
-from agent import Captor
+
 
 
 class Agent:
@@ -9,7 +9,6 @@ class Agent:
         self.fenetre = fenetre
         self.x_position = x_position
         self.y_position = y_position
-        self.captor = Captor()
 
     def GUI_PutAgent(self):
         image = Image.open("ressources/agent.png").resize((50, 50), Image.ANTIALIAS)
