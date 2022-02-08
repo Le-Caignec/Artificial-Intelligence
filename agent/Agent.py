@@ -33,7 +33,7 @@ class Agent:
     def UpdateScore(self, score):
         self.score = score
         
-    def Action(self):
+    # def Action(self):
         case = self.environnement.grid[self.x_position][self.y_position]
         print("--------------------ACTION---------------")
         if case.dust:
