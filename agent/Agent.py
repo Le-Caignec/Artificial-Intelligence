@@ -29,6 +29,13 @@ class Agent:
         print("--------------AGENT-------------------")
         print("- x_position : "+str(self.x_position))
         print("- y_position : "+str(self.y_position))
+    def GUI_PutAgent(self):
+        image = Image.open("ressources/agent.png").resize((50, 50), Image.ANTIALIAS)
+        photo = ImageTk.PhotoImage(image)
+        label = Label(self.fenetre, image=photo)
+        label.config(width=50, height=50)
+        label.image = photo
+        label.grid(row=self.x_position+3, column=self.y_position, sticky=E, padx=10)
 
     def UpdateScore(self, score):
         self.score = score

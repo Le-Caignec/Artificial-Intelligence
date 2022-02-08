@@ -30,3 +30,7 @@ def main(freq,proba):
     
 if __name__ == '__main__':
     main(freq=5,proba=1/10)
+    fenetre = Tk()
+    environement = GUI_Environement(fenetre)
+    environement.start()
+    environement.fenetre.mainloop()
