@@ -18,8 +18,8 @@ class CLI_Environement:
     def Afficher(self):
         print("--------------GRILLE-------------------")
         print("[")
-        for x_position in range(5):
-            for y_position in range(5):
+        for y_position in range(5):
+            for  x_position in range(5):
                 print("["+self.isDiamond(x_position, y_position)+","+self.isDust(x_position, y_position)+"], ", end='')
             print("")
         print("]")
@@ -42,21 +42,21 @@ class CLI_Environement:
         self.grid = [[Case() for i in range(5)] for k in range(5)]
 
 
-    def GenerateNewGrid(self):
-        for row in range(5):
-            for column in range(5):
+    def GenerateNewGrid(self, proba):
+        for x in range(5):
+            for y in range(5):
                 #ajout d'un diamond
-                if uniform(0, 3) <= 1:
-                    if self.grid[row][column].dust:
-                        one_case = Case(row, column, True, True)
+                if uniform(0, 1/proba) <= 1:
+                    if self.grid[x][y].dust:
+                        one_case = Case(x, y, True, True)
                     else: 
-                        one_case = Case(row, column, True, False)
+                        one_case = Case(x, y, True, False)
                     self.grid[one_case.x_position][one_case.y_position] = one_case
                 #ajout de Dust
-                if uniform(0, 3) <= 1:
-                    if self.grid[row][column].diamond:
-                        one_case = Case(row, column, True, True)
+                if uniform(0, 1/proba) <= 1:
+                    if self.grid[x][y].diamond:
+                        one_case = Case(x, y, True, True)
                     else: 
-                        one_case = Case(row, column, False, True)
+                        one_case = Case(x, y, False, True)
                     self.grid[one_case.x_position][one_case.y_position] = one_case
 

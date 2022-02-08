@@ -35,43 +35,37 @@ class Agent:
         
     def Action(self):
         case = self.environnement.grid[self.x_position][self.y_position]
+        print("--------------------ACTION---------------")
         if case.dust:
             if case.diamond:
                 self.score.aspirated_diamond += 1
+                print("J'ai aspirer un diamant !")
             self.score.aspirated_dust += 1
             self.plan_action.remove(case)
-            print("--------------------PLAN ACTION---------------")
-            print(self.plan_action)
+            print("J'ai aspirer une poussière !")
         elif case.diamond:
             self.score.collected_diamond += 1
             self.plan_action.remove(case)
-            print("--------------------PLAN ACTION---------------")
-            print(self.plan_action)
+            print("J'ai collecter un diamant !")
         self.environnement.ClearCase(case.x_position, case.y_position)
                 
     def Deplacement(self):
-        case_objectif = self.plan_action[0]
-        #l'agent se déplace d'une case à chaque appel de Deplacement()
-        #l'agent se déplace d'abord suivant les colonnes puis les lignes 
-        if self.x_position < case_objectif.x_position:
-            self.x_position += 1
-        elif self.x_position > case_objectif.x_position:
-            self.x_position -= 1
+        if self.plan_action != []:
+            case_objectif = self.plan_action[0]
+            #l'agent se déplace d'une case à chaque appel de Deplacement()
+            #l'agent se déplace d'abord suivant les colonnes puis les lignes 
+            if self.x_position < case_objectif.x_position:
+                self.x_position += 1
+            elif self.x_position > case_objectif.x_position:
+                self.x_position -= 1
+            else:
+                if self.y_position < case_objectif.y_position:
+                    self.y_position += 1
+                elif self.y_position > case_objectif.y_position:
+                    self.y_position -= 1
         else:
-            if self.y_position < case_objectif.y_position:
-                self.y_position += 1
-            elif self.y_position > case_objectif.y_position:
-                self.y_position -= 1
-
-    def vie(self):
-        if self.plan_action == []:
-            self.plan_action = self.algoNonInformé()
-            print("--------------------PLAN ACTION---------------")
-            print(self.plan_action)
-        self.Deplacement()
-        self.AfficherAgent()
-        self.Action()
-
+            print("Inutile de se déplacer car la grille est vide : ni diamant, ni poussière")
+       
     def Search_Objective(self):
         L=[]
         grid = self.environnement.grid
@@ -89,18 +83,18 @@ class Agent:
         return distance
     
     def algoNonInformé(self):
-        print("je suis rentré")
         List_opti = [self.environnement.grid[self.x_position][self.y_position]]
         n=len(self.objectif)
         for i in range(n):
-            distance_min = self.Distance(List_opti[-1],self.objectif[0])
+            obj_to_delete = self.objectif[0]
+            distance_min = self.Distance(List_opti[-1],obj_to_delete)
             for obj in self.objectif:
                 distance_temp = self.Distance(List_opti[-1],obj)
                 if distance_min > distance_temp:
                     distance_min = distance_temp
-                    self.objectif.remove(obj)
-                    print("j'ai ajouté qqch ")
-                    List_opti.append(obj)
+                    obj_to_delete = obj
+            self.objectif.remove(obj_to_delete)
+            List_opti.append(obj_to_delete)
         List_opti.pop(0)
         return List_opti
             
