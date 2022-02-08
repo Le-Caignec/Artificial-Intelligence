@@ -3,9 +3,10 @@ from dataclasses import dataclass
 from math import dist
 from os import environ
 from tkinter import *
+from tracemalloc import start
 from PIL import ImageTk, Image
 from agent import Captor
-from environement import CLI_Environement
+from environement.CLI_Environement import *
 
 @dataclass
 class Score:
@@ -16,11 +17,13 @@ class Score:
 class Agent:
 
     def __init__(self, x_position, y_position, environnement):
+        self.x_position = x_position
+        self.y_position = y_position
         self.plan_action = []
         self.environnement = environnement
         self.score = Score()
-        self.x_position = x_position
-        self.y_position = y_position
+        self.objectif = self.Search_Objective()
+        
 
     def AfficherAgent(self):
         print("--------------AGENT-------------------")
@@ -60,9 +63,9 @@ class Agent:
             elif self.y_position > case_objectif.y_position:
                 self.y_position -= 1
 
-    def Life(self):
+    def vie(self):
         if self.plan_action == []:
-            self.algoNonInformé()
+            self.plan_action = self.algoNonInformé()
             print("--------------------PLAN ACTION---------------")
             print(self.plan_action)
         self.Deplacement()
@@ -86,30 +89,19 @@ class Agent:
         return distance
     
     def algoNonInformé(self):
-        Objectives = self.Search_Objective()
-        List_opti = []
-        n = len(Objectives)
-        distance_min = 0
+        print("je suis rentré")
+        List_opti = [self.environnement.grid[self.x_position][self.y_position]]
+        n=len(self.objectif)
         for i in range(n):
-            distance = 0
-            List = []
-            distance, List, bool= self.Parcours(Objectives, i, distance, distance_min, List, True) 
-            if bool:
-                distance_min = distance
-                List_opti = List
-        self.plan_action = List_opti
-    
-    def Parcours(self, Objectives, i, distance, distance_min, List, bool):
-        n = len(Objectives)
-        distance += self.Distance(List[-1], Objectives[i])
-        if distance >= distance_min:
-            return distance, List, False
-        elif bool:
-            List.append(Objectives[i])
-            if n == 1:
-                return distance, List, True
-            else:
-                Objectives.pop(i)
-                for j in range(n):
-                    distance, List, bool = self.Parcours(Objectives, j, distance, distance_min, List, True)
-                    return 
+            distance_min = self.Distance(List_opti[-1],self.objectif[0])
+            for obj in self.objectif:
+                distance_temp = self.Distance(List_opti[-1],obj)
+                if distance_min > distance_temp:
+                    distance_min = distance_temp
+                    self.objectif.remove(obj)
+                    print("j'ai ajouté qqch ")
+                    List_opti.append(obj)
+        List_opti.pop(0)
+        return List_opti
+            
+   
