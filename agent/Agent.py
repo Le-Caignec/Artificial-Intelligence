@@ -1,5 +1,6 @@
 import encodings
 from dataclasses import dataclass
+from math import dist
 from os import environ
 from tkinter import *
 from PIL import ImageTk, Image
@@ -59,7 +60,7 @@ class Agent:
             elif self.y_position > case_objectif.y_position:
                 self.y_position -= 1
 
-    def vie(self):
+    def Life(self):
         if self.plan_action == []:
             self.algoNonInformé()
             print("--------------------PLAN ACTION---------------")
@@ -68,7 +69,7 @@ class Agent:
         self.AfficherAgent()
         self.Action()
 
-    def algoNonInformé(self):
+    def Search_Objective(self):
         L=[]
         grid = self.environnement.grid
         for x_pos in range(5):
@@ -76,7 +77,39 @@ class Agent:
                 case = self.environnement.grid[x_pos][y_pos]
                 if case.dust or case.diamond:
                     L.append(case)
-        self.plan_action = L
-
-
-
+        return L
+    
+    def Distance(self,start_case, final_case):
+        distance_x = abs(start_case.x_position - final_case.x_position)
+        distance_y = abs(start_case.y_position - final_case.y_position)
+        distance = distance_x + distance_y
+        return distance
+    
+    def algoNonInformé(self):
+        Objectives = self.Search_Objective()
+        List_opti = []
+        n = len(Objectives)
+        distance_min = 0
+        for i in range(n):
+            distance = 0
+            List = []
+            distance, List, bool= self.Parcours(Objectives, i, distance, distance_min, List, True) 
+            if bool:
+                distance_min = distance
+                List_opti = List
+        self.plan_action = List_opti
+    
+    def Parcours(self, Objectives, i, distance, distance_min, List, bool):
+        n = len(Objectives)
+        distance += self.Distance(List[-1], Objectives[i])
+        if distance >= distance_min:
+            return distance, List, False
+        elif bool:
+            List.append(Objectives[i])
+            if n == 1:
+                return distance, List, True
+            else:
+                Objectives.pop(i)
+                for j in range(n):
+                    distance, List, bool = self.Parcours(Objectives, j, distance, distance_min, List, True)
+                    return 
