@@ -5,8 +5,8 @@ from os import environ
 from tkinter import *
 from tracemalloc import start
 from PIL import ImageTk, Image
-from agent import Captor
-from environement.CLI_Environement import *
+from agent import Brain
+from environement.CLI_Environnement import *
 
 @dataclass
 class Score:
@@ -23,24 +23,16 @@ class Agent:
         self.environnement = environnement
         self.score = Score()
         self.objectif = self.Search_Objective()
-        
 
     def AfficherAgent(self):
         print("--------------AGENT-------------------")
         print("- x_position : "+str(self.x_position))
         print("- y_position : "+str(self.y_position))
-    def GUI_PutAgent(self):
-        image = Image.open("ressources/agent.png").resize((50, 50), Image.ANTIALIAS)
-        photo = ImageTk.PhotoImage(image)
-        label = Label(self.fenetre, image=photo)
-        label.config(width=50, height=50)
-        label.image = photo
-        label.grid(row=self.x_position+3, column=self.y_position, sticky=E, padx=10)
 
     def UpdateScore(self, score):
         self.score = score
         
-    # def Action(self):
+    def Action(self):
         case = self.environnement.grid[self.x_position][self.y_position]
         print("--------------------ACTION---------------")
         if case.dust:
@@ -57,7 +49,7 @@ class Agent:
         self.environnement.ClearCase(case.x_position, case.y_position)
                 
     def Deplacement(self):
-        if self.plan_action != []:
+        if not self.plan_action:
             case_objectif = self.plan_action[0]
             #l'agent se déplace d'une case à chaque appel de Deplacement()
             #l'agent se déplace d'abord suivant les colonnes puis les lignes 
@@ -74,7 +66,7 @@ class Agent:
             print("Inutile de se déplacer car la grille est vide : ni diamant, ni poussière")
        
     def Search_Objective(self):
-        L=[]
+        L = []
         grid = self.environnement.grid
         for x_pos in range(5):
             for y_pos in range(5):
@@ -83,26 +75,27 @@ class Agent:
                     L.append(case)
         return L
     
-    def Distance(self,start_case, final_case):
+    def Distance(self, start_case, final_case):
         distance_x = abs(start_case.x_position - final_case.x_position)
         distance_y = abs(start_case.y_position - final_case.y_position)
         distance = distance_x + distance_y
         return distance
     
-    def algoNonInformé(self):
-        List_opti = [self.environnement.grid[self.x_position][self.y_position]]
-        n=len(self.objectif)
+    def AlgoNonInforme(self):
+        list_opti = [self.environnement.grid[self.x_position][self.y_position]]
+        n = len(self.objectif)
         for i in range(n):
             obj_to_delete = self.objectif[0]
-            distance_min = self.Distance(List_opti[-1],obj_to_delete)
+            distance_min = self.Distance(list_opti[-1], obj_to_delete)
             for obj in self.objectif:
-                distance_temp = self.Distance(List_opti[-1],obj)
+                distance_temp = self.Distance(list_opti[-1], obj)
                 if distance_min > distance_temp:
                     distance_min = distance_temp
                     obj_to_delete = obj
             self.objectif.remove(obj_to_delete)
-            List_opti.append(obj_to_delete)
-        List_opti.pop(0)
-        return List_opti
+            list_opti.append(obj_to_delete)
+        list_opti.pop(0)
+        return list_opti
+
+
             
-   

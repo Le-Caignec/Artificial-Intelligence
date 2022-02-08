@@ -10,7 +10,7 @@ class Case:
     dust: bool = False
 
 
-class CLI_Environement:
+class CLI_Environnement:
 
     def __init__(self):
         self.grid = [[Case() for i in range(5)] for k in range(5)]
