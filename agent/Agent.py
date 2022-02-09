@@ -92,12 +92,12 @@ class Agent:
         list_opti.pop(0)
         return list_opti
 
-    def Reconstruct_path(self, cameFrom, startCase):
+    def Reconstruct_path(self, currentCase, cameFrom, startCase):
         reconst_path = []
 
-        while cameFrom[str(currentCase.x_position+currentCase.y_position)] != currentCase:
+        while cameFrom[str(currentCase.x_position)+str(currentCase.y_position)] != currentCase:
             reconst_path.append(currentCase)
-            currentCase = cameFrom[str(currentCase.x_position+currentCase.y_position)]
+            currentCase = cameFrom[str(currentCase.x_position)+str(currentCase.y_position)]
 
         reconst_path.append(startCase)
         reconst_path.reverse()
@@ -106,41 +106,41 @@ class Agent:
 
     #On utilise l'algorithme informé A* search
     def AlgoInforme(self):
-        startCase = self.plan_action[0]
+        startCase = self.environnement.grid[self.x_position][self.y_position]
         endCase = self.plan_action[-1]
 
         caseToVisit = [startCase]
         visitedCase = []
  
         distStartCaseTo = {}
-        distStartCaseTo[str(startCase.x_position+startCase.y_position)] = 0
+        distStartCaseTo[str(startCase.x_position)+str(startCase.y_position)] = 0
  
         cameFrom = {}
-        cameFrom["startCase"] = startCase
+        cameFrom[str(startCase.x_position)+str(startCase.y_position)] = startCase
  
         while len(caseToVisit) > 0:
-            currentCase = Case()
+            currentCase = None
             for nextCase in caseToVisit:
-                if currentCase == Case() or ((distStartCaseTo[str(nextCase.x_position+nextCase.y_position)]) + (self.environnement.Evaluation(nextCase))) < ((distStartCaseTo[str(currentCase.x_position+currentCase.y_position)]) + (self.environnement.Evaluation(currentCase))):
+                if currentCase == None or (distStartCaseTo[str(nextCase.x_position)+str(nextCase.y_position)] + nextCase.note) < (distStartCaseTo[str(currentCase.x_position)+str(currentCase.y_position)] + currentCase.note):
                     currentCase = nextCase
  
-            if currentCase == Case():
-                print('Path does not exist!')
+            if currentCase == None:
+                print('1 : Path does not exist!')
                 return None
 
             if currentCase == endCase:
-                return self.Reconstruct_path(cameFrom, startCase)
+                return self.Reconstruct_path(currentCase, cameFrom, startCase)
  
             for neighboor in self.environnement.get_neighboors(currentCase):
                 if neighboor not in caseToVisit and neighboor not in visitedCase:
                     caseToVisit.append(neighboor)
-                    cameFrom[str(neighboor.x_position+neighboor.y_position)] = currentCase
-                    distStartCaseTo[str(neighboor.x_position+neighboor.y_position)] = distStartCaseTo[str(currentCase.x_position+currentCase.y_position)] + 1
+                    cameFrom[str(neighboor.x_position)+str(neighboor.y_position)] = currentCase
+                    distStartCaseTo[str(neighboor.x_position)+str(neighboor.y_position)] = distStartCaseTo[str(currentCase.x_position)+str(currentCase.y_position)] + 1
  
                 else:
-                    if distStartCaseTo[str(neighboor.x_position+neighboor.y_position)] > distStartCaseTo[str(currentCase.x_position+currentCase.y_position)] + 1:
-                        distStartCaseTo[str(neighboor.x_position+neighboor.y_position)] = distStartCaseTo[str(currentCase.x_position+currentCase.y_position)] + 1
-                        cameFrom[str(neighboor.x_position+neighboor.y_position)] = currentCase
+                    if distStartCaseTo[str(neighboor.x_position)+str(neighboor.y_position)] > distStartCaseTo[str(currentCase.x_position)+str(currentCase.y_position)] + 1:
+                        distStartCaseTo[str(neighboor.x_position)+str(neighboor.y_position)] = distStartCaseTo[str(currentCase.x_position)+str(currentCase.y_position)] + 1
+                        cameFrom[str(neighboor.x_position)+str(neighboor.y_position)] = currentCase
 
                         if neighboor in visitedCase:
                             visitedCase.remove(neighboor)
@@ -149,5 +149,5 @@ class Agent:
             caseToVisit.remove(currentCase)
             visitedCase.append(currentCase)
  
-        print('Path does not exist!')
+        print('2: Path does not exist!')
         return None

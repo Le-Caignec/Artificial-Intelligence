@@ -8,7 +8,7 @@ class Case:
     y_position: int = 0
     diamond: bool = False
     dust: bool = False
-    note : float = 0.0
+    note: float = 0.0
 
 
 class CLI_Environnement:
@@ -44,13 +44,13 @@ class CLI_Environnement:
 
     def get_neighboors(self, case):
         list_neighbors = []
-        if case.x_position+1<=4:
+        if case.x_position+1 <= 4:
             list_neighbors.append(self.grid[case.x_position+1][case.y_position])
-        if case.x_position-1>=0:
+        if case.x_position-1 >= 0:
             list_neighbors.append(self.grid[case.x_position-1][case.y_position])
-        if case.y_position+1<=4:
+        if case.y_position+1 <= 4:
             list_neighbors.append(self.grid[case.x_position][case.y_position+1])
-        if case.y_position-1>=0:
+        if case.y_position-1 >= 0:
             list_neighbors.append(self.grid[case.x_position][case.y_position-1])        
         return list_neighbors
 
@@ -63,7 +63,9 @@ class CLI_Environnement:
                         one_case = Case(x, y, True, True)
                     else: 
                         one_case = Case(x, y, True, False)
-                    self.grid[one_case.x_position][one_case.y_position] = one_case
+                else:
+                    one_case = Case(x, y, False, False)
+                self.grid[one_case.x_position][one_case.y_position] = one_case
                 #ajout de Dust
                 if uniform(0, 1/proba) <= 1:
                     if self.grid[x][y].diamond:
@@ -76,7 +78,7 @@ class CLI_Environnement:
     def Evaluation(self, case):
             if case.dust:
                 if case.diamond:
-                    case.note = 0
+                    case.note = -2
                 case.note += 5 
             elif case.diamond:
                 case.note += 10

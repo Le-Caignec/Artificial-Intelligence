@@ -20,7 +20,7 @@ class Brain(Thread):
         agent = Agent(0, 0, cli_environnement)
         agent.AfficherAgent()
         agent.plan_action = agent.AlgoNonInforme()
-        agent.plan_action = agent.AlgoInforme()
+        print("plan d'action algo informé : ", agent.AlgoInforme())
         # c = 1
         # while True:
         #     print("--------------------PLAN ACTION---------------")
