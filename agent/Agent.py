@@ -1,11 +1,6 @@
-import encodings
 from dataclasses import dataclass
-from math import dist
-from os import environ
 from tkinter import *
-from tracemalloc import start
 from PIL import ImageTk, Image
-from agent import Brain
 from environement.CLI_Environnement import *
 
 @dataclass
@@ -49,7 +44,7 @@ class Agent:
         self.environnement.ClearCase(case.x_position, case.y_position)
                 
     def Deplacement(self):
-        if not self.plan_action:
+        if self.plan_action != []:
             case_objectif = self.plan_action[0]
             #l'agent se déplace d'une case à chaque appel de Deplacement()
             #l'agent se déplace d'abord suivant les colonnes puis les lignes 
@@ -75,16 +70,16 @@ class Agent:
                     L.append(case)
         return L
     
-    def Distance(self, start_case, final_case):
-        distance_x = abs(start_case.x_position - final_case.x_position)
-        distance_y = abs(start_case.y_position - final_case.y_position)
+    def Distance(self, startCase_case, final_case):
+        distance_x = abs(startCase_case.x_position - final_case.x_position)
+        distance_y = abs(startCase_case.y_position - final_case.y_position)
         distance = distance_x + distance_y
         return distance
     
     def AlgoNonInforme(self):
         list_opti = [self.environnement.grid[self.x_position][self.y_position]]
-        n = len(self.objectif)
-        for i in range(n):
+        currentCase = len(self.objectif)
+        for i in range(currentCase):
             obj_to_delete = self.objectif[0]
             distance_min = self.Distance(list_opti[-1], obj_to_delete)
             for obj in self.objectif:
@@ -97,5 +92,62 @@ class Agent:
         list_opti.pop(0)
         return list_opti
 
+    def Reconstruct_path(self, cameFrom, startCase):
+        reconst_path = []
 
-            
+        while cameFrom[str(currentCase.x_position+currentCase.y_position)] != currentCase:
+            reconst_path.append(currentCase)
+            currentCase = cameFrom[str(currentCase.x_position+currentCase.y_position)]
+
+        reconst_path.append(startCase)
+        reconst_path.reverse()
+        print('Path found: {}'.format(reconst_path))
+        return reconst_path     
+
+    #On utilise l'algorithme informé A* search
+    def AlgoInforme(self):
+        startCase = self.plan_action[0]
+        endCase = self.plan_action[-1]
+
+        caseToVisit = [startCase]
+        visitedCase = []
+ 
+        distStartCaseTo = {}
+        distStartCaseTo[str(startCase.x_position+startCase.y_position)] = 0
+ 
+        cameFrom = {}
+        cameFrom["startCase"] = startCase
+ 
+        while len(caseToVisit) > 0:
+            currentCase = Case()
+            for nextCase in caseToVisit:
+                if currentCase == Case() or ((distStartCaseTo[str(nextCase.x_position+nextCase.y_position)]) + (self.environnement.Evaluation(nextCase))) < ((distStartCaseTo[str(currentCase.x_position+currentCase.y_position)]) + (self.environnement.Evaluation(currentCase))):
+                    currentCase = nextCase
+ 
+            if currentCase == Case():
+                print('Path does not exist!')
+                return None
+
+            if currentCase == endCase:
+                return self.Reconstruct_path(cameFrom, startCase)
+ 
+            for neighboor in self.environnement.get_neighboors(currentCase):
+                if neighboor not in caseToVisit and neighboor not in visitedCase:
+                    caseToVisit.append(neighboor)
+                    cameFrom[str(neighboor.x_position+neighboor.y_position)] = currentCase
+                    distStartCaseTo[str(neighboor.x_position+neighboor.y_position)] = distStartCaseTo[str(currentCase.x_position+currentCase.y_position)] + 1
+ 
+                else:
+                    if distStartCaseTo[str(neighboor.x_position+neighboor.y_position)] > distStartCaseTo[str(currentCase.x_position+currentCase.y_position)] + 1:
+                        distStartCaseTo[str(neighboor.x_position+neighboor.y_position)] = distStartCaseTo[str(currentCase.x_position+currentCase.y_position)] + 1
+                        cameFrom[str(neighboor.x_position+neighboor.y_position)] = currentCase
+
+                        if neighboor in visitedCase:
+                            visitedCase.remove(neighboor)
+                            caseToVisit.append(neighboor)
+ 
+            caseToVisit.remove(currentCase)
+            visitedCase.append(currentCase)
+ 
+        print('Path does not exist!')
+        return None

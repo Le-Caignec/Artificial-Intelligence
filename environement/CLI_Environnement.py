@@ -8,6 +8,7 @@ class Case:
     y_position: int = 0
     diamond: bool = False
     dust: bool = False
+    note : float = 0.0
 
 
 class CLI_Environnement:
@@ -41,6 +42,17 @@ class CLI_Environnement:
     def ClearGrid(self): 
         self.grid = [[Case() for i in range(5)] for k in range(5)]
 
+    def get_neighboors(self, case):
+        list_neighbors = []
+        if case.x_position+1<=4:
+            list_neighbors.append(self.grid[case.x_position+1][case.y_position])
+        if case.x_position-1>=0:
+            list_neighbors.append(self.grid[case.x_position-1][case.y_position])
+        if case.y_position+1<=4:
+            list_neighbors.append(self.grid[case.x_position][case.y_position+1])
+        if case.y_position-1>=0:
+            list_neighbors.append(self.grid[case.x_position][case.y_position-1])        
+        return list_neighbors
 
     def GenerateNewGrid(self, proba):
         for x in range(5):
@@ -59,4 +71,13 @@ class CLI_Environnement:
                     else: 
                         one_case = Case(x, y, False, True)
                     self.grid[one_case.x_position][one_case.y_position] = one_case
+                self.Evaluation(self.grid[x][y])
+
+    def Evaluation(self, case):
+            if case.dust:
+                if case.diamond:
+                    case.note = 0
+                case.note += 5 
+            elif case.diamond:
+                case.note += 10
 

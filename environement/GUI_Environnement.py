@@ -1,5 +1,5 @@
-from tkinter import *
 from threading import *
+from tkinter import *
 from PIL import Image, ImageTk
 
 
@@ -8,7 +8,7 @@ class GUI_Environnement(Thread):
     def __init__(self):
         Thread.__init__(self)
         #score label
-        self.collected_diamond_label, self.aspirated_dust_label, self.aspirated_diamond_label = self.Score()
+        #self.collected_diamond_label, self.aspirated_dust_label, self.aspirated_diamond_label = self.Score()
         #GUI
         self.fenetre = Tk()
         self.Creat_GUI()
@@ -16,7 +16,7 @@ class GUI_Environnement(Thread):
     def Creat_GUI(self):
         self.CreatFenetre()
         self.CreatGrid()
-        self.Score()
+        #self.Score()
 
     def CreatFenetre(self):
         self.fenetre.title('Artificial Intelligence')
@@ -36,16 +36,16 @@ class GUI_Environnement(Thread):
 
     def Score(self):
         #Collected Diamond
-        collected_diamond = Label(self.fenetre, text="Collected Diamond : "+str(0), fg='#043AFF')
+        collected_diamond = Label(self.fenetre, text="Collected Diamond : 0", fg='#043AFF')
         collected_diamond.grid(row=0, column=0, columnspan=5, sticky=NW)
         #Aspirated Dust
-        aspirated_dust = Label(self.fenetre, text="Aspirated Dust : "+str(0), fg='#043AFF')
+        aspirated_dust = Label(self.fenetre, text="Aspirated Dust : 0", fg='#043AFF')
         aspirated_dust.grid(row=1, column=0, columnspan=5, sticky=NW)
         #Aspirated Diamond
-        aspirated_diamond = Label(self.fenetre, text="Aspirated Diamond : "+str(0), fg='#043AFF')
+        aspirated_diamond = Label(self.fenetre, text="Aspirated Diamond : 0", fg='#043AFF')
         aspirated_diamond.grid(row=2, column=0, columnspan=5, sticky=NW)
         return collected_diamond, aspirated_dust, aspirated_diamond
-
+    
     def UpdateScore(self, collected_diamond, aspirated_dust, aspirated_diamond):
         self.collected_diamond_label = collected_diamond
         self.aspirated_dust_label = aspirated_dust
