@@ -101,8 +101,7 @@ class Agent:
 
         reconst_path.append(startCase)
         reconst_path.reverse()
-        print('Path found: {}'.format(reconst_path))
-        return reconst_path     
+        return reconst_path
 
     #On utilise l'algorithme informé A* search
     def AlgoInforme(self):
