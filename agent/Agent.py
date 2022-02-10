@@ -120,7 +120,7 @@ class Agent:
         while len(caseToVisit) > 0:
             currentCase = None
             for nextCase in caseToVisit:
-                if currentCase == None or (distStartCaseTo[str(nextCase.x_position)+str(nextCase.y_position)] + nextCase.note) < (distStartCaseTo[str(currentCase.x_position)+str(currentCase.y_position)] + currentCase.note):
+                if currentCase == None or (distStartCaseTo[str(nextCase.x_position)+str(nextCase.y_position)] + nextCase.note) > (distStartCaseTo[str(currentCase.x_position)+str(currentCase.y_position)] + currentCase.note):
                     currentCase = nextCase
  
             if currentCase == None:
@@ -147,6 +147,6 @@ class Agent:
  
             caseToVisit.remove(currentCase)
             visitedCase.append(currentCase)
- 
+
         print('2: Path does not exist!')
         return None

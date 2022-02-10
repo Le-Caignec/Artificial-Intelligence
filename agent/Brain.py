@@ -23,6 +23,7 @@ class Brain(Thread):
         print("--------------------PLAN ACTION NON INFORME---------------")
         print(agent.plan_action)
         print("--------------------PLAN ACTION INFORME---------------")
+        print("Case objectif : ", agent.plan_action[-1])
         agent.plan_action = agent.AlgoInforme()
         print(agent.AlgoInforme())
         # c = 1
