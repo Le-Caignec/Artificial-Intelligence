@@ -57,15 +57,15 @@ class CLI_Environnement:
     def GenerateNewGrid(self, proba):
         for x in range(5):
             for y in range(5):
+                one_case = Case(x, y, False, False)
+                self.grid[one_case.x_position][one_case.y_position] = one_case
                 #ajout d'un diamond
                 if uniform(0, 1/proba) <= 1:
                     if self.grid[x][y].dust:
                         one_case = Case(x, y, True, True)
                     else: 
                         one_case = Case(x, y, True, False)
-                else:
-                    one_case = Case(x, y, False, False)
-                self.grid[one_case.x_position][one_case.y_position] = one_case
+
                 #ajout de Dust
                 if uniform(0, 1/proba) <= 1:
                     if self.grid[x][y].diamond:
@@ -77,9 +77,9 @@ class CLI_Environnement:
 
     def Evaluation(self, case):
             if case.dust:
+                case.note = 15
                 if case.diamond:
-                    case.note = -2
-                case.note += 5 
+                    case.note = 10
             elif case.diamond:
-                case.note += 10
+                case.note = 20
 

@@ -136,15 +136,6 @@ class Agent:
                     cameFrom[str(neighboor.x_position)+str(neighboor.y_position)] = currentCase
                     distStartCaseTo[str(neighboor.x_position)+str(neighboor.y_position)] = distStartCaseTo[str(currentCase.x_position)+str(currentCase.y_position)] + 1
  
-                else:
-                    if distStartCaseTo[str(neighboor.x_position)+str(neighboor.y_position)] > distStartCaseTo[str(currentCase.x_position)+str(currentCase.y_position)] + 1:
-                        distStartCaseTo[str(neighboor.x_position)+str(neighboor.y_position)] = distStartCaseTo[str(currentCase.x_position)+str(currentCase.y_position)] + 1
-                        cameFrom[str(neighboor.x_position)+str(neighboor.y_position)] = currentCase
-
-                        if neighboor in visitedCase:
-                            visitedCase.remove(neighboor)
-                            caseToVisit.append(neighboor)
- 
             caseToVisit.remove(currentCase)
             visitedCase.append(currentCase)
 
