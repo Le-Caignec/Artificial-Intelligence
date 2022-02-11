@@ -65,29 +65,30 @@ class Agent:
         grid = self.environnement.grid
         for x_pos in range(5):
             for y_pos in range(5):
-                case = self.environnement.grid[x_pos][y_pos]
+                case = grid[x_pos][y_pos]
                 if case.dust or case.diamond:
                     L.append(case)
         return L
     
-    def Distance(self, startCase_case, final_case):
-        distance_x = abs(startCase_case.x_position - final_case.x_position)
-        distance_y = abs(startCase_case.y_position - final_case.y_position)
+    def Distance(self, start_case, final_case):
+        distance_x = abs(start_case.x_position - final_case.x_position)
+        distance_y = abs(start_case.y_position - final_case.y_position)
         distance = distance_x + distance_y
         return distance
     
     def AlgoNonInforme(self):
         list_opti = [self.environnement.grid[self.x_position][self.y_position]]
-        currentCase = len(self.objectif)
-        for i in range(currentCase):
-            obj_to_delete = self.objectif[0]
+        n = len(self.objectif)
+        list_objectives=self.copy(self.objectif)
+        for i in range(n):
+            obj_to_delete = list_objectives[0]
             distance_min = self.Distance(list_opti[-1], obj_to_delete)
-            for obj in self.objectif:
+            for obj in list_objectives:
                 distance_temp = self.Distance(list_opti[-1], obj)
                 if distance_min > distance_temp:
                     distance_min = distance_temp
                     obj_to_delete = obj
-            self.objectif.remove(obj_to_delete)
+            list_objectives.remove(obj_to_delete)
             list_opti.append(obj_to_delete)
         list_opti.pop(0)
         return list_opti
@@ -104,9 +105,7 @@ class Agent:
         return reconst_path
 
     #On utilise l'algorithme informé A* search
-    def AlgoInforme(self):
-        startCase = self.environnement.grid[self.x_position][self.y_position]
-        endCase = self.plan_action[-1]
+    def AlgoInforme(self, startCase,  path, list_objectives, endCase):
 
         caseToVisit = [startCase]
         visitedCase = []
@@ -128,16 +127,57 @@ class Agent:
                 return None
 
             if currentCase == endCase:
-                return self.Reconstruct_path(currentCase, cameFrom, startCase)
- 
-            for neighboor in self.environnement.get_neighboors(currentCase):
+                list_objectives.remove(endCase)
+                if list_objectives != []:
+                    path += self.Reconstruct_path(currentCase, cameFrom, startCase)
+                    path = self.AlgoInforme(path[-1], path, list_objectives, list_objectives[-1])
+                else : 
+                    return path
+
+            for neighboor in self.get_3_neighboors(currentCase, list_objectives):
                 if neighboor not in caseToVisit and neighboor not in visitedCase:
                     caseToVisit.append(neighboor)
                     cameFrom[str(neighboor.x_position)+str(neighboor.y_position)] = currentCase
-                    distStartCaseTo[str(neighboor.x_position)+str(neighboor.y_position)] = distStartCaseTo[str(currentCase.x_position)+str(currentCase.y_position)] + 1
- 
+                    distStartCaseTo[str(neighboor.x_position)+str(neighboor.y_position)] = distStartCaseTo[str(currentCase.x_position)+str(currentCase.y_position)] + self.Distance(currentCase, neighboor)
+
+
             caseToVisit.remove(currentCase)
             visitedCase.append(currentCase)
+            if currentCase in list_objectives:
+                list_objectives.remove(currentCase)
 
         print('2: Path does not exist!')
         return None
+
+    def copy(self, list):
+        new_list=[]
+        for el in list:
+            new_list.append(el)
+        return new_list
+
+    def get_3_neighboors(self, case, list_objectives):
+        list_neighboors = []
+        for obj in list_objectives:
+            dist_obj=self.Distance(case,obj)
+            if len(list_neighboors) < 3:
+                bool = True
+                n = len(list_neighboors)
+                for i in range(n):
+                    neighboor = list_neighboors[i]
+                    dist_neighboor=self.Distance(case, neighboor)
+                    if dist_obj < dist_neighboor and bool:
+                        list_neighboors = list_neighboors[:i]+[obj]+list_neighboors[i:n]
+                        bool=False
+                if bool: 
+                    list_neighboors.append(obj)
+            else:
+                bool=True
+                n=len(list_neighboors)
+                for i in range(n):
+                    neighboor = list_neighboors[i]
+                    dist_neighboor=self.Distance(case, neighboor)
+                    if dist_obj < dist_neighboor and bool:
+                        list_neighboors = list_neighboors[:i]+[obj]+list_neighboors[i:n-1]
+                        bool=False
+        return list_neighboors
+
