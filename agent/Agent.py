@@ -12,6 +12,8 @@ class Agent:
     def __init__(self, x_position, y_position, environnement):
         self.x_position = x_position
         self.y_position = y_position
+        self.mentalState = []
+        self.note_moy = 0
         self.plan_action = []
         self.environnement = environnement
         self.score = Score()
@@ -99,14 +101,14 @@ class Agent:
             new_list.append(el)
         return new_list
 
-    def greedy_upgraded(self, note_moy):
+    def greedy_upgraded(self):
         n=len(self.objectif)
         start_case = self.environnement.grid[self.x_position][self.y_position]
         list_objectives = self.copy(self.objectif)
 
             
         path=[start_case]
-        note_path=start_case.note + n*note_moy
+        note_path=start_case.note + n*self.note_moy
 
         cameFrom={}
         cameFrom[str(start_case.x_position)+str(start_case.y_position)]=(path,note_path,start_case.note)
@@ -117,13 +119,13 @@ class Agent:
             isLessMoy=False
             for obj in list_objectives:
                 note_obj = obj.note - self.Distance(path[-1], obj)
-                if note_obj < note_moy:
+                if note_obj < self.note_moy:
                     if note_obj > note_max:
                         note_max=note_obj
                         case_opti=obj
                         isLessMoy=True
                     cameFrom[str(obj.x_position)+str(obj.y_position)]=(path,note_path, note_obj)
-                if note_obj >= note_moy:
+                if note_obj >= self.note_moy:
                     if note_obj > note_max:
                         note_max=note_obj
                         case_opti=obj
@@ -141,12 +143,41 @@ class Agent:
                 list_objectives = self.copy(self.objectif)
                 chosen_case = self.environnement.grid[int(key_chosen[0])][int(key_chosen[1])]
                 path.append(chosen_case)
-                note_path+=note_max - note_moy
+                note_path+=note_max - self.note_moy
                 for el in path:
                     if el in list_objectives:
                         list_objectives.remove(el)
             else:
                 path.append(case_opti)
-                note_path+=note_max - note_moy
+                note_path+=note_max - self.note_moy
                 list_objectives.remove(case_opti)
         return path
+
+    def ChoiceAlgo(self, sizeMentalState):
+        if len(self.mentalState) < sizeMentalState:
+            path = self.AlgoNonInforme()
+        else :
+            path = self.greedy_upgraded()
+        return path
+    
+    def UpdateMentalState(self):
+        self.mentalState.append((len(self.plan_action)-1,self.EvalPath(self.plan_action)))
+        self.updateNoteMoy()
+    
+    def EvalPath(self, path):
+        startcase = path[0]
+        n =len(path)
+        noteMoy = 0
+        for obj in path:
+            if obj != startcase:
+                noteMoy += obj.note - self.Distance(startcase, obj)
+        noteMoy = noteMoy / (n-1)
+        return noteMoy
+    
+    def updateNoteMoy(self):
+        note = 0
+        n = 0
+        for tuple in self.mentalState:
+            note += tuple(0)*tuple(1)
+            n += tuple(0)
+        self.note_moy = note/n

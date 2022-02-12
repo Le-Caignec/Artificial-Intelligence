@@ -6,7 +6,7 @@ from environement.Thread_Env import *
 from agent.Thread_Agent import *
 from agent.Brain import *
 
-def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent):
+def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent, sizeMentalState):
     #creation de l'environement pour l'agent
     cli_environnement = CLI_Environnement()
     cli_environnement.GenerateNewGrid(proba)
@@ -15,20 +15,20 @@ def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent):
     #creation de l'agent
     agent = Agent(x_pos_agent, y_pos_agent, cli_environnement)
 
-    #creation de l'interface graphique
-    #GUI = GUI_Environnement(cli_environnement)
-    #GUI.GUI_PutAgent(agent.x_position, agent.y_position)
-    #GUI.GUI_Display_Grid()
-    #GUI.fenetre.mainloop()
+    # creation de l'interface graphique
+    GUI = GUI_Environnement(cli_environnement)
+    # GUI.GUI_PutAgent(agent.x_position, agent.y_position)
+    # GUI.GUI_Display_Grid()
+    # GUI.fenetre.mainloop()
 
     # Creation des Threads
-    #conteur = 1
-    #thread_Agent = Thread_Agent(agent)
-    #thread_Env = Thread_Env(conteur, proba, freq, GUI, agent, cli_environnement)
+    conteur = 1
+    thread_Agent = Thread_Agent(agent, sizeMentalState)
+    thread_Env = Thread_Env(conteur, proba, freq, GUI, agent, cli_environnement)
 
-    #for k in range(1):
+    for k in range(2):
         # Thread Agent
-        #thread_Agent.start()
+        thread_Agent.start()
 
         # Thread Environnement
         #thread_Env.start()
@@ -46,9 +46,10 @@ if __name__ == '__main__':
     Time_Break = 3
     X_Posistion_Agent = 0
     Y_Posistion_Agent = 0
+    sizeMentalState = 10
     ###################################
 
-    Programme(Frequence, Probabilite, Time_Break, X_Posistion_Agent, Y_Posistion_Agent)
+    Programme(Frequence, Probabilite, Time_Break, X_Posistion_Agent, Y_Posistion_Agent, sizeMentalState)
 
     #Thread algorithme
     brain = Brain(freq=5, proba=1/3, time_break=3)

@@ -28,7 +28,7 @@ class Brain(Thread):
         # print(agent.AlgoInforme())
         # print("Nombre de case avec quelque chose : ", test_algo_informe(agent.AlgoInforme()))
         # print("Case avec des objects non visitée : ", diff_plan_action(agent.AlgoInforme()))
-        path = agent.greedy_upgraded(12)
+        path = agent.greedy_upgraded()
         print(path)
         print(len(path))
 
