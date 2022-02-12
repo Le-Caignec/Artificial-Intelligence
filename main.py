@@ -20,16 +20,16 @@ def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent):
     GUI.fenetre.mainloop()
 
     # Creation des Threads
-    Thread_Env = Thread_Env(proba, freq, GUI, agent, cli_environnement)
-    Thread_Agent = Thread_Agent(agent)
+    thread_Env = Thread_Env(proba, freq, GUI, agent, cli_environnement)
+    thread_Agent = Thread_Agent(agent)
 
     c = 1
     while True:
         # Thread Agent
-        Thread_Agent.start()
+        thread_Env.start()
 
         # Thread Environnement
-        Thread_Env.start(c)
+        thread_Agent.start(c)
         c += 1
 
         # Temps d'attente entre les threads afin de mettre à jour l'intercade graphique

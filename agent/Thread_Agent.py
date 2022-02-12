@@ -13,7 +13,7 @@ class Thread_Agent(Thread):
         # Get lock to synchronize threads
         threadLock.acquire()
 
-        self.agent.objectif =self.agent.Search_Objective()
+        self.agent.objectif = self.agent.Search_Objective()
         self.agent.plan_action = self.agent.AlgoNonInforme()
         self.agent.Action()
         self.agent.Deplacement()

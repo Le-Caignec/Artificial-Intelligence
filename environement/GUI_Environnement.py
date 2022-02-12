@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 class GUI_Environnement():
 
     def __init__(self, cli_environnement):
-        #self.collected_diamond_label, self.aspirated_dust_label, self.aspirated_diamond_label = self.Score()
+        self.collected_diamond_label, self.aspirated_dust_label, self.aspirated_diamond_label = self.Score()
         self.cli_environnement = cli_environnement
         self.fenetre = Tk()
         self.Creat_GUI()
