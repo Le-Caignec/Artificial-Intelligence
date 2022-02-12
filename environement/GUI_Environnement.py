@@ -5,15 +5,15 @@ from PIL import Image, ImageTk
 class GUI_Environnement():
 
     def __init__(self, cli_environnement):
+        self.fenetre = Tk()
         self.collected_diamond_label, self.aspirated_dust_label, self.aspirated_diamond_label = self.Score()
         self.cli_environnement = cli_environnement
-        self.fenetre = Tk()
         self.Creat_GUI()
+        self.label_diamond, self.label_dust, self.label_agent = self.Initialize_object()
 
     def Creat_GUI(self):
         self.CreatFenetre()
         self.CreatGrid()
-        #self.Score()
 
     def CreatFenetre(self):
         self.fenetre.title('Artificial Intelligence')
@@ -48,29 +48,37 @@ class GUI_Environnement():
         self.aspirated_dust_label = aspirated_dust
         self.aspirated_diamond_label = aspirated_diamond
 
+    def Initialize_object(self):
+        #Creation de l'objet image Diamond
+        image_diamond = Image.open('ressources/diamant.png').resize((60, 45), Image.ANTIALIAS)
+        photo_diamond = ImageTk.PhotoImage(image_diamond)
+        label_diamond = Label(self.fenetre, image=photo_diamond)
+        label_diamond.config(width=50, height=30)
+        label_diamond.image = photo_diamond
+
+        #Creation de l'objet image Dust
+        image_dust = Image.open('ressources/pierre.png').resize((50, 40), Image.ANTIALIAS)
+        photo_dust = ImageTk.PhotoImage(image_dust)
+        label_dust = Label(self.fenetre, image=photo_dust)
+        label_dust.config(width=50, height=30)
+        label_dust.image = photo_dust
+
+        #Creation de l'objet image Agent
+        image_agent = Image.open("ressources/agent.png").resize((50, 50), Image.ANTIALIAS)
+        photo_agent = ImageTk.PhotoImage(image_agent)
+        label_agent = Label(self.fenetre, image=photo_agent)
+        label_agent.config(width=50, height=50)
+        label_agent.image = photo_agent
+        return label_diamond, label_dust, label_agent
+
     def GUI_PutDiamond(self, x_position, y_position):
-        image = Image.open('ressources/diamant.png').resize((60, 45), Image.ANTIALIAS)
-        photo = ImageTk.PhotoImage(image)
-        label = Label(self.fenetre, image=photo)
-        label.config(width=50, height=30)
-        label.image = photo
-        label.grid(row=x_position+3, column=y_position, sticky=NW, padx=2, pady=8)
+        self.label_diamond.grid(row=x_position+3, column=y_position, sticky=NW, padx=2, pady=8)
 
     def GUI_PutDust(self, x_position, y_position):
-        image = Image.open('ressources/pierre.png').resize((50, 40), Image.ANTIALIAS)
-        photo = ImageTk.PhotoImage(image)
-        label = Label(self.fenetre, image=photo)
-        label.config(width=50, height=30)
-        label.image = photo
-        label.grid(row=x_position+3, column=y_position, sticky=SW, padx=18, pady=18)
+        self.label_dust.grid(row=x_position+3, column=y_position, sticky=SW, padx=18, pady=18)
 
     def GUI_PutAgent(self, x_position, y_position):
-        image = Image.open("ressources/agent.png").resize((50, 50), Image.ANTIALIAS)
-        photo = ImageTk.PhotoImage(image)
-        label = Label(self.fenetre, image=photo)
-        label.config(width=50, height=50)
-        label.image = photo
-        label.grid(row=x_position+3, column=y_position, sticky=E, padx=10)
+        self.label_agent.grid(row=x_position+3, column=y_position, sticky=E, padx=10)
 
     def GUI_Display_Grid(self):
         for x in range(5):
