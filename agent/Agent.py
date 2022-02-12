@@ -1,3 +1,4 @@
+from calendar import c
 from dataclasses import dataclass
 from tkinter import *
 from PIL import ImageTk, Image
@@ -125,14 +126,14 @@ class Agent:
         while len(caseToVisit) > 0:
             currentCase = None
             for nextCase in caseToVisit:
-                if currentCase == None or (noteFromStart[str(nextCase.x_position)+str(nextCase.y_position)] + nextCase.note) > (noteFromStart[str(currentCase.x_position)+str(currentCase.y_position)] + currentCase.note):
-                    if currentCase == None or cameFrom[str(nextCase.x_position)+str(nextCase.y_position)] == currentCase:
-                        currentCase = nextCase
-                    else:
-                        while cameFrom[str(nextCase.x_position)+str(nextCase.y_position)] != currentCase:
-                            if currentCase in self.objectif:
-                                list_objectives.append(currentCase)
-                            currentCase = cameFrom[str(currentCase.x_position)+str(currentCase.y_position)]
+                if currentCase == None or (noteFromStart[str(nextCase.x_position)+str(nextCase.y_position)]) > (noteFromStart[str(currentCase.x_position)+str(currentCase.y_position)]):
+                    currentCase = nextCase
+            if visitedCase != []:
+                while cameFrom[str(currentCase.x_position)+str(currentCase.y_position)] != visitedCase[-1]:
+                    if visitedCase[-1] in self.objectif:
+                        list_objectives.append(visitedCase[-1])
+                        caseToVisit.append(visitedCase[-1])
+                        visitedCase.pop(-1)
  
             if currentCase == None:
                 print('1 : Path does not exist!')
@@ -146,7 +147,7 @@ class Agent:
                 if neighboor not in caseToVisit and neighboor not in visitedCase:
                     caseToVisit.append(neighboor)
                     cameFrom[str(neighboor.x_position)+str(neighboor.y_position)] = currentCase
-                    noteFromStart[str(neighboor.x_position)+str(neighboor.y_position)] = noteFromStart[str(currentCase.x_position)+str(currentCase.y_position)] - self.Distance(currentCase, neighboor)
+                    noteFromStart[str(neighboor.x_position)+str(neighboor.y_position)] = noteFromStart[str(currentCase.x_position)+str(currentCase.y_position)] + neighboor.note - self.Distance(currentCase, neighboor)
 
             caseToVisit.remove(currentCase)
             visitedCase.append(currentCase)
@@ -175,3 +176,54 @@ class Agent:
         else: 
             return [neighboors_sorted[0][1], neighboors_sorted[1][1], neighboors_sorted[2][1]]
 
+    def greedy_upgraded(self, note_moy):
+        n=len(self.objectif)
+        start_case = self.environnement.grid[self.x_position][self.y_position]
+        list_objectives = self.copy(self.objectif)
+
+            
+        path=[start_case]
+        note_path=start_case.note + n*note_moy
+
+        cameFrom={}
+        cameFrom[str(start_case.x_position)+str(start_case.y_position)]=(path,note_path,start_case.note)
+            
+        while list_objectives != []:
+            note_max = list_objectives[0].note - self.Distance(path[-1], list_objectives[0])
+            case_opti = list_objectives[0]
+            isLessMoy=False
+            for obj in list_objectives:
+                note_obj = obj.note - self.Distance(path[-1], obj)
+                if note_obj < note_moy:
+                    if note_obj > note_max:
+                        note_max=note_obj
+                        case_opti=obj
+                        isLessMoy=True
+                    cameFrom[str(obj.x_position)+str(obj.y_position)]=(path,note_path, note_obj)
+                if note_obj >= note_moy:
+                    if note_obj > note_max:
+                        note_max=note_obj
+                        case_opti=obj
+                        isLessMoy=False
+                    cameFrom[str(obj.x_position)+str(obj.y_position)]=(path, note_path,  note_obj)
+
+            if isLessMoy:
+                key_chosen = str(case_opti.x_position)+str(case_opti.y_position)
+                for key in cameFrom:
+                    key_obj=self.environnement.grid[int(key[0])][int(key[1])]
+                    if key_obj not in path and cameFrom[key][1]+cameFrom[key][2] > note_path + note_max:
+                        key_chosen=key
+                        note_max=cameFrom[key][2]
+                (path,note_path,note_max)=cameFrom[key_chosen]
+                list_objectives = self.copy(self.objectif)
+                chosen_case = self.environnement.grid[int(key_chosen[0])][int(key_chosen[1])]
+                path.append(chosen_case)
+                note_path+=note_max - note_moy
+                for el in path:
+                    if el in list_objectives:
+                        list_objectives.remove(el)
+            else:
+                path.append(case_opti)
+                note_path+=note_max - note_moy
+                list_objectives.remove(case_opti)
+        return path

@@ -20,14 +20,21 @@ class Brain(Thread):
         agent = Agent(0, 0, cli_environnement)
         agent.AfficherAgent()
         agent.plan_action = agent.AlgoNonInforme()
-        print("--------------------PLAN ACTION NON INFORME---------------")
-        print(agent.plan_action)
-        print("Nombre de case avec quelque chose : ", len(agent.plan_action))
-        print("--------------------PLAN ACTION INFORME---------------")
-        print("GOAL : ", agent.plan_action[-1])
-        print(agent.AlgoInforme())
-        print("Nombre de case avec quelque chose : ", test_algo_informe(agent.AlgoInforme()))
-        print("Case avec des objects non visitée : ", diff_plan_action(agent.AlgoInforme()))
+        # print("--------------------PLAN ACTION NON INFORME---------------")
+        # print(agent.plan_action)
+        # print("Nombre de case avec quelque chose : ", len(agent.plan_action))
+        # print("--------------------PLAN ACTION INFORME---------------")
+        # print("GOAL : ", agent.plan_action[-1])
+        # print(agent.AlgoInforme())
+        # print("Nombre de case avec quelque chose : ", test_algo_informe(agent.AlgoInforme()))
+        # print("Case avec des objects non visitée : ", diff_plan_action(agent.AlgoInforme()))
+
+        print(agent.greedy_upgraded(12))
+
+
+
+
+
         # c = 1
         # while True:
         #     print("--------------------PLAN ACTION---------------")
