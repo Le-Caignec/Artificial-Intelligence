@@ -1,3 +1,4 @@
+from calendar import c
 from dataclasses import dataclass
 from tkinter import *
 from PIL import ImageTk, Image
@@ -35,11 +36,13 @@ class Agent:
                 self.score.aspirated_diamond += 1
                 print("J'ai aspirer un diamant !")
             self.score.aspirated_dust += 1
-            self.plan_action.remove(case)
+            if case in self.plan_action:
+                self.plan_action.remove(case)
             print("J'ai aspirer une poussière !")
         elif case.diamond:
             self.score.collected_diamond += 1
-            self.plan_action.remove(case)
+            if case in self.plan_action:
+                self.plan_action.remove(case)
             print("J'ai collecter un diamant !")
         self.environnement.ClearCase(case.x_position, case.y_position)
                 
@@ -65,79 +68,88 @@ class Agent:
         grid = self.environnement.grid
         for x_pos in range(5):
             for y_pos in range(5):
-                case = self.environnement.grid[x_pos][y_pos]
+                case = grid[x_pos][y_pos]
                 if case.dust or case.diamond:
                     L.append(case)
         return L
     
-    def Distance(self, startCase_case, final_case):
-        distance_x = abs(startCase_case.x_position - final_case.x_position)
-        distance_y = abs(startCase_case.y_position - final_case.y_position)
+    def Distance(self, start_case, final_case):
+        distance_x = abs(start_case.x_position - final_case.x_position)
+        distance_y = abs(start_case.y_position - final_case.y_position)
         distance = distance_x + distance_y
         return distance
     
     def AlgoNonInforme(self):
         list_opti = [self.environnement.grid[self.x_position][self.y_position]]
-        currentCase = len(self.objectif)
-        for i in range(currentCase):
-            obj_to_delete = self.objectif[0]
+        n = len(self.objectif)
+        list_objectives=self.copy(self.objectif)
+        for i in range(n):
+            obj_to_delete = list_objectives[0]
             distance_min = self.Distance(list_opti[-1], obj_to_delete)
-            for obj in self.objectif:
+            for obj in list_objectives:
                 distance_temp = self.Distance(list_opti[-1], obj)
                 if distance_min > distance_temp:
                     distance_min = distance_temp
                     obj_to_delete = obj
-            self.objectif.remove(obj_to_delete)
+            list_objectives.remove(obj_to_delete)
             list_opti.append(obj_to_delete)
         list_opti.pop(0)
         return list_opti
 
-    def Reconstruct_path(self, currentCase, cameFrom, startCase):
-        reconst_path = []
+    def copy(self, list):
+        new_list=[]
+        for el in list:
+            new_list.append(el)
+        return new_list
 
-        while cameFrom[str(currentCase.x_position)+str(currentCase.y_position)] != currentCase:
-            reconst_path.append(currentCase)
-            currentCase = cameFrom[str(currentCase.x_position)+str(currentCase.y_position)]
+    def greedy_upgraded(self, note_moy):
+        n=len(self.objectif)
+        start_case = self.environnement.grid[self.x_position][self.y_position]
+        list_objectives = self.copy(self.objectif)
 
-        reconst_path.append(startCase)
-        reconst_path.reverse()
-        return reconst_path
+            
+        path=[start_case]
+        note_path=start_case.note + n*note_moy
 
-    #On utilise l'algorithme informé A* search
-    def AlgoInforme(self):
-        startCase = self.environnement.grid[self.x_position][self.y_position]
-        endCase = self.plan_action[-1]
+        cameFrom={}
+        cameFrom[str(start_case.x_position)+str(start_case.y_position)]=(path,note_path,start_case.note)
+            
+        while list_objectives != []:
+            note_max = list_objectives[0].note - self.Distance(path[-1], list_objectives[0])
+            case_opti = list_objectives[0]
+            isLessMoy=False
+            for obj in list_objectives:
+                note_obj = obj.note - self.Distance(path[-1], obj)
+                if note_obj < note_moy:
+                    if note_obj > note_max:
+                        note_max=note_obj
+                        case_opti=obj
+                        isLessMoy=True
+                    cameFrom[str(obj.x_position)+str(obj.y_position)]=(path,note_path, note_obj)
+                if note_obj >= note_moy:
+                    if note_obj > note_max:
+                        note_max=note_obj
+                        case_opti=obj
+                        isLessMoy=False
+                    cameFrom[str(obj.x_position)+str(obj.y_position)]=(path, note_path,  note_obj)
 
-        caseToVisit = [startCase]
-        visitedCase = []
- 
-        distStartCaseTo = {}
-        distStartCaseTo[str(startCase.x_position)+str(startCase.y_position)] = 0
- 
-        cameFrom = {}
-        cameFrom[str(startCase.x_position)+str(startCase.y_position)] = startCase
- 
-        while len(caseToVisit) > 0:
-            currentCase = None
-            for nextCase in caseToVisit:
-                if currentCase == None or (distStartCaseTo[str(nextCase.x_position)+str(nextCase.y_position)] + nextCase.note) > (distStartCaseTo[str(currentCase.x_position)+str(currentCase.y_position)] + currentCase.note):
-                    currentCase = nextCase
- 
-            if currentCase == None:
-                print('1 : Path does not exist!')
-                return None
-
-            if currentCase == endCase:
-                return self.Reconstruct_path(currentCase, cameFrom, startCase)
- 
-            for neighboor in self.environnement.get_neighboors(currentCase):
-                if neighboor not in caseToVisit and neighboor not in visitedCase:
-                    caseToVisit.append(neighboor)
-                    cameFrom[str(neighboor.x_position)+str(neighboor.y_position)] = currentCase
-                    distStartCaseTo[str(neighboor.x_position)+str(neighboor.y_position)] = distStartCaseTo[str(currentCase.x_position)+str(currentCase.y_position)] + 1
- 
-            caseToVisit.remove(currentCase)
-            visitedCase.append(currentCase)
-
-        print('2: Path does not exist!')
-        return None
+            if isLessMoy:
+                key_chosen = str(case_opti.x_position)+str(case_opti.y_position)
+                for key in cameFrom:
+                    key_obj=self.environnement.grid[int(key[0])][int(key[1])]
+                    if key_obj not in path and cameFrom[key][1]+cameFrom[key][2] > note_path + note_max:
+                        key_chosen=key
+                        note_max=cameFrom[key][2]
+                (path,note_path,note_max)=cameFrom[key_chosen]
+                list_objectives = self.copy(self.objectif)
+                chosen_case = self.environnement.grid[int(key_chosen[0])][int(key_chosen[1])]
+                path.append(chosen_case)
+                note_path+=note_max - note_moy
+                for el in path:
+                    if el in list_objectives:
+                        list_objectives.remove(el)
+            else:
+                path.append(case_opti)
+                note_path+=note_max - note_moy
+                list_objectives.remove(case_opti)
+        return path
