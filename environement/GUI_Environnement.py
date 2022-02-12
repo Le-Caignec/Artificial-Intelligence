@@ -1,12 +1,15 @@
+from threading import *
 from tkinter import *
 from PIL import Image, ImageTk
 
 
-class GUI_Environnement():
+class GUI_Environnement(Thread):
 
-    def __init__(self, cli_environnement):
+    def __init__(self):
+        Thread.__init__(self)
+        #score label
         #self.collected_diamond_label, self.aspirated_dust_label, self.aspirated_diamond_label = self.Score()
-        self.cli_environnement = cli_environnement
+        #GUI
         self.fenetre = Tk()
         self.Creat_GUI()
 
@@ -72,12 +75,11 @@ class GUI_Environnement():
         label.image = photo
         label.grid(row=x_position+3, column=y_position, sticky=E, padx=10)
 
-    def GUI_Display_Grid(self):
-        for x in range(5):
-            for y in range(5):
-                if self.cli_environnement.grid[x][y].diamond:
-                    self.GUI_PutDiamond(x, y)
-                if self.cli_environnement.grid[x][y].dust:
-                    self.GUI_PutDust(x, y)
+    #Fonction lancée lorsque le thread est start()
+    def run(self):
+        print("je dessine mon interface")
+        #self.GUI_PutAgent(0, 0)
+        #self.GUI_PutDiamond(0, 0)
+        #self.GUI_PutDust(0, 0)
 
 
