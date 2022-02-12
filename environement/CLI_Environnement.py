@@ -71,3 +71,10 @@ class CLI_Environnement:
             elif case.diamond:
                 case.note = 20
 
+    def getNoteMax(self):
+        note = 0
+        for x in range(5):
+            for y in range(5):
+                case = self.grid[x][y]
+                note += case.note
+        return note

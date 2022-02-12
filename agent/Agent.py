@@ -106,13 +106,18 @@ class Agent:
         return reconst_path
 
     #On utilise l'algorithme informé A* search
-    def AlgoInforme(self, startCase,  path, list_objectives, endCase):
+    def AlgoInforme(self):
+        list_objectives = self.copy(self.objectif)
+
+        noteMax = self.environnement.getNoteMax()
+
+        startCase = self.environnement.grid[self.x_position][self.y_position]
 
         caseToVisit = [startCase]
         visitedCase = []
  
-        distStartCaseTo = {}
-        distStartCaseTo[str(startCase.x_position)+str(startCase.y_position)] = 0
+        noteFromStart = {}
+        noteFromStart[str(startCase.x_position)+str(startCase.y_position)] = startCase.note
  
         cameFrom = {}
         cameFrom[str(startCase.x_position)+str(startCase.y_position)] = startCase
@@ -120,27 +125,28 @@ class Agent:
         while len(caseToVisit) > 0:
             currentCase = None
             for nextCase in caseToVisit:
-                if currentCase == None or (distStartCaseTo[str(nextCase.x_position)+str(nextCase.y_position)] + nextCase.note) > (distStartCaseTo[str(currentCase.x_position)+str(currentCase.y_position)] + currentCase.note):
-                    currentCase = nextCase
+                if currentCase == None or (noteFromStart[str(nextCase.x_position)+str(nextCase.y_position)] + nextCase.note) > (noteFromStart[str(currentCase.x_position)+str(currentCase.y_position)] + currentCase.note):
+                    if currentCase == None or cameFrom[str(nextCase.x_position)+str(nextCase.y_position)] == currentCase:
+                        currentCase = nextCase
+                    else:
+                        while cameFrom[str(nextCase.x_position)+str(nextCase.y_position)] != currentCase:
+                            if currentCase in self.objectif:
+                                list_objectives.append(currentCase)
+                            currentCase = cameFrom[str(currentCase.x_position)+str(currentCase.y_position)]
  
             if currentCase == None:
                 print('1 : Path does not exist!')
                 return None
 
-            if currentCase == endCase:
-                list_objectives.remove(endCase)
-                if list_objectives != []:
-                    path += self.Reconstruct_path(currentCase, cameFrom, startCase)
-                    path = self.AlgoInforme(path[-1], path, list_objectives, list_objectives[-1])
-                else :
-                    path += self.Reconstruct_path(currentCase, cameFrom, startCase)
-                    return path
+            if noteFromStart == noteMax or list_objectives == []:
+                path = self.Reconstruct_path(currentCase, cameFrom, startCase)
+                return path
 
             for neighboor in self.get_neighboors(currentCase, list_objectives):
                 if neighboor not in caseToVisit and neighboor not in visitedCase:
                     caseToVisit.append(neighboor)
                     cameFrom[str(neighboor.x_position)+str(neighboor.y_position)] = currentCase
-                    distStartCaseTo[str(neighboor.x_position)+str(neighboor.y_position)] = distStartCaseTo[str(currentCase.x_position)+str(currentCase.y_position)] + self.Distance(currentCase, neighboor)
+                    noteFromStart[str(neighboor.x_position)+str(neighboor.y_position)] = noteFromStart[str(currentCase.x_position)+str(currentCase.y_position)] - self.Distance(currentCase, neighboor)
 
             caseToVisit.remove(currentCase)
             visitedCase.append(currentCase)

@@ -25,9 +25,9 @@ class Brain(Thread):
         print("Nombre de case avec quelque chose : ", len(agent.plan_action))
         print("--------------------PLAN ACTION INFORME---------------")
         print("GOAL : ", agent.plan_action[-1])
-        print(agent.AlgoInforme(cli_environnement.grid[agent.x_position][agent.y_position], [], agent.copy(agent.objectif), agent.plan_action[-1]))
-        print("Nombre de case avec quelque chose : ", test_algo_informe(agent.AlgoInforme(cli_environnement.grid[agent.x_position][agent.y_position], [], agent.copy(agent.objectif), agent.plan_action[-1])))
-        print("Case avec des objects non visitée : ", diff_plan_action(agent.AlgoInforme(cli_environnement.grid[agent.x_position][agent.y_position], [], agent.copy(agent.objectif)), agent.plan_action, agent.plan_action[-1]))
+        print(agent.AlgoInforme())
+        print("Nombre de case avec quelque chose : ", test_algo_informe(agent.AlgoInforme()))
+        print("Case avec des objects non visitée : ", diff_plan_action(agent.AlgoInforme()))
         # c = 1
         # while True:
         #     print("--------------------PLAN ACTION---------------")
