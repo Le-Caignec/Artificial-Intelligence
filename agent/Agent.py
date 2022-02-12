@@ -132,6 +132,7 @@ class Agent:
                     path += self.Reconstruct_path(currentCase, cameFrom, startCase)
                     path = self.AlgoInforme(path[-1], path, list_objectives, list_objectives[-1])
                 else : 
+                    path += self.Reconstruct_path(currentCase, cameFrom, startCase)
                     return path
 
             for neighboor in self.get_3_neighboors(currentCase, list_objectives):
