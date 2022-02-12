@@ -1,9 +1,9 @@
 from agent.Agent import Agent
-from environement.CLI_Environnement import *
 from time import *
+import threading
 from threading import *
 
-class Brain(Thread):
+class Thread_Agent(Thread):
 
     def __init__(self, freq, proba, time_break):
         Thread.__init__(self)
@@ -13,21 +13,14 @@ class Brain(Thread):
 
     #Fonction lancée lorsque le thread est start()
     def run(self):
-        # print("j'avance")
-        cli_environnement = CLI_Environnement()
-        cli_environnement.GenerateNewGrid(self.proba)
-        cli_environnement.Afficher()
-        agent = Agent(0, 0, cli_environnement)
-        agent.AfficherAgent()
+        threadLock = threading.Lock()
+        # Get lock to synchronize threads
+        threadLock.acquire()
+
         agent.plan_action = agent.AlgoNonInforme()
         print("--------------------PLAN ACTION NON INFORME---------------")
         print(agent.plan_action)
         print("Nombre de case avec quelque chose : ", len(agent.plan_action))
-        print("--------------------PLAN ACTION INFORME---------------")
-        print("GOAL : ", agent.plan_action[-1])
-        print(agent.AlgoInforme())
-        print("Nombre de case avec quelque chose : ", test_algo_informe(agent.AlgoInforme()))
-        print("Case avec des objects non visitée : ", diff_plan_action(agent.AlgoInforme(), agent.plan_action))
         # c = 1
         # while True:
         #     print("--------------------PLAN ACTION---------------")
@@ -46,17 +39,7 @@ class Brain(Thread):
         #     c += 1
         #     sleep(5)
 
-def test_algo_informe(plan_action):
-    count = 0
-    for case in plan_action:
-        if case.note > 0:
-            count += 1
-    return count
+        # Free lock to release next thread
+        threadLock.release()
 
-def diff_plan_action(list_informe, list_non_informe):
-    L=[]
-    for case in list_non_informe:
-        if case not in list_informe:
-            L.append(case)
-    return L
 
