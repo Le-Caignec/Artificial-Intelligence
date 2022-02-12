@@ -96,85 +96,11 @@ class Agent:
         list_opti.pop(0)
         return list_opti
 
-    def Reconstruct_path(self, currentCase, cameFrom, startCase):
-        reconst_path = []
-
-        while cameFrom[str(currentCase.x_position)+str(currentCase.y_position)] != currentCase:
-            reconst_path.append(currentCase)
-            currentCase = cameFrom[str(currentCase.x_position)+str(currentCase.y_position)]
-
-        reconst_path.reverse()
-        return reconst_path
-
-    #On utilise l'algorithme informé A* search
-    def AlgoInforme(self):
-        list_objectives = self.copy(self.objectif)
-
-        noteMax = self.environnement.getNoteMax()
-
-        startCase = self.environnement.grid[self.x_position][self.y_position]
-
-        caseToVisit = [startCase]
-        visitedCase = []
- 
-        noteFromStart = {}
-        noteFromStart[str(startCase.x_position)+str(startCase.y_position)] = startCase.note
- 
-        cameFrom = {}
-        cameFrom[str(startCase.x_position)+str(startCase.y_position)] = startCase
- 
-        while len(caseToVisit) > 0:
-            currentCase = None
-            for nextCase in caseToVisit:
-                if currentCase == None or (noteFromStart[str(nextCase.x_position)+str(nextCase.y_position)]) > (noteFromStart[str(currentCase.x_position)+str(currentCase.y_position)]):
-                    currentCase = nextCase
-            if visitedCase != []:
-                while cameFrom[str(currentCase.x_position)+str(currentCase.y_position)] != visitedCase[-1]:
-                    if visitedCase[-1] in self.objectif:
-                        list_objectives.append(visitedCase[-1])
-                        caseToVisit.append(visitedCase[-1])
-                        visitedCase.pop(-1)
- 
-            if currentCase == None:
-                print('1 : Path does not exist!')
-                return None
-
-            if noteFromStart == noteMax or list_objectives == []:
-                path = self.Reconstruct_path(currentCase, cameFrom, startCase)
-                return path
-
-            for neighboor in self.get_neighboors(currentCase, list_objectives):
-                if neighboor not in caseToVisit and neighboor not in visitedCase:
-                    caseToVisit.append(neighboor)
-                    cameFrom[str(neighboor.x_position)+str(neighboor.y_position)] = currentCase
-                    noteFromStart[str(neighboor.x_position)+str(neighboor.y_position)] = noteFromStart[str(currentCase.x_position)+str(currentCase.y_position)] + neighboor.note - self.Distance(currentCase, neighboor)
-
-            caseToVisit.remove(currentCase)
-            visitedCase.append(currentCase)
-            if currentCase in list_objectives:
-                list_objectives.remove(currentCase)
-
-        print('2: Path does not exist!')
-        return None
-
     def copy(self, list):
         new_list=[]
         for el in list:
             new_list.append(el)
         return new_list
-
-    def get_neighboors(self, case, list_objectives):
-        list_neighboors = {}
-        for obj in list_objectives:
-            list_neighboors[str(self.Distance(case,obj))] = obj
-        neighboors_sorted = sorted(list_neighboors.items())
-        if len(neighboors_sorted)<3:
-            L=[]
-            for i in range(len(neighboors_sorted)):
-                L.append(neighboors_sorted[i][1])
-            return L
-        else: 
-            return [neighboors_sorted[0][1], neighboors_sorted[1][1], neighboors_sorted[2][1]]
 
     def greedy_upgraded(self, note_moy):
         n=len(self.objectif)
