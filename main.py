@@ -1,8 +1,9 @@
-from environement.Thread_Env import *
-from agent.Thread_Agent import *
 from environement.CLI_Environnement import *
 from environement.GUI_Environnement import *
 from time import *
+from agent.Agent import *
+from environement.Thread_Env import *
+from agent.Thread_Agent import *
 
 def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent):
     #creation de l'environement pour l'agent

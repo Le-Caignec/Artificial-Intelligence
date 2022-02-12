@@ -1,6 +1,5 @@
+from random import uniform
 from dataclasses import dataclass
-from random import uniform, randint
-from agent.Agent import *
 
 @dataclass
 class Case:

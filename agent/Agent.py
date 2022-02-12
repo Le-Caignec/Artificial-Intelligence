@@ -1,7 +1,4 @@
 from dataclasses import dataclass
-from tkinter import *
-from PIL import ImageTk, Image
-from environement.CLI_Environnement import *
 
 @dataclass
 class Score:
