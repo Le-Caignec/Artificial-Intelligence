@@ -35,11 +35,13 @@ class Agent:
                 self.score.aspirated_diamond += 1
                 print("J'ai aspirer un diamant !")
             self.score.aspirated_dust += 1
-            self.plan_action.remove(case)
+            if case in self.plan_action:
+                self.plan_action.remove(case)
             print("J'ai aspirer une poussière !")
         elif case.diamond:
             self.score.collected_diamond += 1
-            self.plan_action.remove(case)
+            if case in self.plan_action:
+                self.plan_action.remove(case)
             print("J'ai collecter un diamant !")
         self.environnement.ClearCase(case.x_position, case.y_position)
                 
@@ -100,7 +102,6 @@ class Agent:
             reconst_path.append(currentCase)
             currentCase = cameFrom[str(currentCase.x_position)+str(currentCase.y_position)]
 
-        reconst_path.append(startCase)
         reconst_path.reverse()
         return reconst_path
 
@@ -131,16 +132,15 @@ class Agent:
                 if list_objectives != []:
                     path += self.Reconstruct_path(currentCase, cameFrom, startCase)
                     path = self.AlgoInforme(path[-1], path, list_objectives, list_objectives[-1])
-                else : 
+                else :
                     path += self.Reconstruct_path(currentCase, cameFrom, startCase)
                     return path
 
-            for neighboor in self.get_3_neighboors(currentCase, list_objectives):
+            for neighboor in self.get_neighboors(currentCase, list_objectives):
                 if neighboor not in caseToVisit and neighboor not in visitedCase:
                     caseToVisit.append(neighboor)
                     cameFrom[str(neighboor.x_position)+str(neighboor.y_position)] = currentCase
                     distStartCaseTo[str(neighboor.x_position)+str(neighboor.y_position)] = distStartCaseTo[str(currentCase.x_position)+str(currentCase.y_position)] + self.Distance(currentCase, neighboor)
-
 
             caseToVisit.remove(currentCase)
             visitedCase.append(currentCase)
@@ -156,29 +156,16 @@ class Agent:
             new_list.append(el)
         return new_list
 
-    def get_3_neighboors(self, case, list_objectives):
-        list_neighboors = []
+    def get_neighboors(self, case, list_objectives):
+        list_neighboors = {}
         for obj in list_objectives:
-            dist_obj=self.Distance(case,obj)
-            if len(list_neighboors) < 3:
-                bool = True
-                n = len(list_neighboors)
-                for i in range(n):
-                    neighboor = list_neighboors[i]
-                    dist_neighboor=self.Distance(case, neighboor)
-                    if dist_obj < dist_neighboor and bool:
-                        list_neighboors = list_neighboors[:i]+[obj]+list_neighboors[i:n]
-                        bool=False
-                if bool: 
-                    list_neighboors.append(obj)
-            else:
-                bool=True
-                n=len(list_neighboors)
-                for i in range(n):
-                    neighboor = list_neighboors[i]
-                    dist_neighboor=self.Distance(case, neighboor)
-                    if dist_obj < dist_neighboor and bool:
-                        list_neighboors = list_neighboors[:i]+[obj]+list_neighboors[i:n-1]
-                        bool=False
-        return list_neighboors
+            list_neighboors[str(self.Distance(case,obj))] = obj
+        neighboors_sorted = sorted(list_neighboors.items())
+        if len(neighboors_sorted)<3:
+            L=[]
+            for i in range(len(neighboors_sorted)):
+                L.append(neighboors_sorted[i][1])
+            return L
+        else: 
+            return [neighboors_sorted[0][1], neighboors_sorted[1][1], neighboors_sorted[2][1]]
 

@@ -42,18 +42,6 @@ class CLI_Environnement:
     def ClearGrid(self): 
         self.grid = [[Case() for i in range(5)] for k in range(5)]
 
-    def get_neighboors(self, case):
-        list_neighbors = []
-        if case.x_position+1 <= 4:
-            list_neighbors.append(self.grid[case.x_position+1][case.y_position])
-        if case.x_position-1 >= 0:
-            list_neighbors.append(self.grid[case.x_position-1][case.y_position])
-        if case.y_position+1 <= 4:
-            list_neighbors.append(self.grid[case.x_position][case.y_position+1])
-        if case.y_position-1 >= 0:
-            list_neighbors.append(self.grid[case.x_position][case.y_position-1])        
-        return list_neighbors
-
     def GenerateNewGrid(self, proba):
         for x in range(5):
             for y in range(5):
