@@ -37,7 +37,7 @@ if __name__ == '__main__':
     Time_Break = 3
     X_Posistion_Agent = 0
     Y_Posistion_Agent = 0
-    sizeMentalState = 1
+    sizeMentalState = 5
     ###################################
 
     Programme(Frequence, Probability, Time_Break, X_Posistion_Agent, Y_Posistion_Agent, sizeMentalState)
