@@ -23,12 +23,13 @@ class Thread_Env(Thread):
             threadLock = threading.Lock()
             # Get lock to synchronize threads
             threadLock.acquire()
-
+            self.GUI.GUI_Clear_Case(self.agent.x_position, self.agent.y_position)
             self.GUI.GUI_PutAgent(self.agent.x_position, self.agent.y_position)
 
             if self.compteur % self.freq == 0:
                 self.cli_environnement.GenerateNewGrid(self.proba)
                 self.cli_environnement.Afficher()
+                self.GUI.GUI_Clear()
                 self.GUI.GUI_Display_Grid()
 
             # Free lock to release next thread
