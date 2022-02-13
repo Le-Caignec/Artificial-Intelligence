@@ -22,6 +22,7 @@ class Thread_Env(Thread):
             threadLock.acquire()
 
             if self.compteur % self.freq == 0:
+                print("generate new grid")
                 self.cli_environnement.GenerateNewGrid(self.proba)
                 self.cli_environnement.Afficher()
                 self.GUI.GUI_Clear()

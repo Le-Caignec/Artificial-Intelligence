@@ -18,7 +18,7 @@ class Thread_Agent(Thread):
             threadLock = threading.Lock()
             threadLock.acquire()
             if self.bool:
-                if self.agent.captor.Detect_New_Env:
+                if self.agent.captor.Detect_New_Env():
                     self.agent.objectif = self.agent.Search_Objective()
                     self.agent.Action()
                     self.agent.plan_action = self.agent.ChoiceAlgo(self.sizeMentalState)

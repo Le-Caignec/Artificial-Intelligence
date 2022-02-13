@@ -8,4 +8,6 @@ class Captor:
         if self.cli_envirennement.isNew:
             self.cli_envirennement.isNew = False
             return True
+        else:
+            return False
 
