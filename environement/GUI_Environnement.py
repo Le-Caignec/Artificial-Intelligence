@@ -93,7 +93,7 @@ class GUI_Environnement(Thread):
     def GUI_PutAgent(self, x_position, y_position):
         self.label_agent.grid(row=y_position+3, column=x_position, sticky=E, padx=10)
 
-    def GUI_Display_Grid(self, grid):
+    def GUI_Display_Grid(self):
         for x in range(5):
             for y in range(5):
                 if self.cli_environnement.grid[x][y].diamond:

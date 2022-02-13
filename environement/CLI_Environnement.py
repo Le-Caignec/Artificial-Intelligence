@@ -1,5 +1,6 @@
 from random import uniform
 from dataclasses import dataclass
+
 @dataclass
 class Case:
     x_position: int = 0

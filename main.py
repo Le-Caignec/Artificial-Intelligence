@@ -1,10 +1,8 @@
-from pydoc import cli
 from environement.CLI_Environnement import *
 from environement.GUI_Environnement import *
 from agent.Agent import *
 from environement.Thread_Env import *
 from agent.Thread_Agent import *
-from agent.Brain import *
 
 def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent, sizeMentalState):
     #creation de l'environement pour l'agent
@@ -14,6 +12,7 @@ def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent, sizeMentalState
 
     #creation de l'agent
     agent = Agent(x_pos_agent, y_pos_agent, cli_environnement)
+    agent.Action()
 
     #creation de l'interface graphique
     GUI = GUI_Environnement(cli_environnement)
@@ -21,7 +20,7 @@ def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent, sizeMentalState
     GUI.GUI_PutAgent(agent.x_position, agent.y_position)
 
     # Thread Agent
-    thread_Agent = Thread_Agent(agent, time_break)
+    thread_Agent = Thread_Agent(agent, time_break, sizeMentalState)
     thread_Agent.start()
 
     # Thread Environnement
@@ -43,7 +42,4 @@ if __name__ == '__main__':
 
     Programme(Frequence, Probabilite, Time_Break, X_Posistion_Agent, Y_Posistion_Agent, sizeMentalState)
 
-    #Thread algorithme
-    # brain = Brain(freq=5, proba=1/3, time_break=3)
-    # brain.start()
 
