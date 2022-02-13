@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from agent.Captor import *
 
 @dataclass
 class Score:
@@ -17,6 +18,7 @@ class Agent:
         self.environnement = environnement
         self.score = Score()
         self.objectif = self.Search_Objective()
+        self.captor = Captor(environnement)
 
     def AfficherAgent(self):
         print("--------------AGENT-------------------")

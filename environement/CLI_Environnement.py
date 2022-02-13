@@ -13,7 +13,8 @@ class Case:
 class CLI_Environnement:
 
     def __init__(self):
-        self.grid = [[Case(k,i) for i in range(5)] for k in range(5)]
+        self.grid = [[Case(k, i) for i in range(5)] for k in range(5)]
+        self.isNew = False
 
     def Afficher(self):
         print("-----------------GRILLE-------------------")
@@ -67,6 +68,7 @@ class CLI_Environnement:
                 if uniform(0, 1 / proba) <= 1:
                     self.SetDust(x, y)
                 self.Evaluation(self.grid[x][y])
+        self.isNew = True
 
     def Evaluation(self, case):
         if case.dust:

@@ -8,37 +8,32 @@ class Thread_Agent(Thread):
         Thread.__init__(self)
         self.agent = agent
         self.time_break = time_break
-        self.bool = False
         self.sizeMentalState = sizeMentalState
 
     #Fonction lancée lorsque le thread est start()
     def run(self):
-        self.agent.objectif = self.agent.Search_Objective()
         while True:
-            if self.bool:
-                # Get lock to synchronize threads
-                threadLock = threading.Lock()
-                threadLock.acquire()
+            # Get lock to synchronize threads
+            threadLock = threading.Lock()
+            threadLock.acquire()
 
-                #check if the environnment changed <=> self.agent.objectif == self.agent.Search_Objective()
-                # if self.captor.isNewEnvironnment:
-                if self.agent.objectif != self.agent.Search_Objective():
-                    self.agent.objectif = self.agent.Search_Objective()
-                    self.agent.Action()
-                    self.agent.plan_action = self.agent.ChoiceAlgo(self.sizeMentalState)
-                    self.agent.UpdateMentalState()
-                    self.agent.Deplacement()
-                    self.agent.Action()
-                else:
-                    self.agent.Deplacement()
-                    self.agent.Action()
+            #check if the environnment changed <=> self.agent.objectif == self.agent.Search_Objective()
+            if self.agent.captor.Detect_New_Env:
+                self.agent.objectif = self.agent.Search_Objective()
+                self.agent.Action()
+                self.agent.plan_action = self.agent.ChoiceAlgo(self.sizeMentalState)
+                self.agent.UpdateMentalState()
+                self.agent.Deplacement()
+                self.agent.Action()
+            else:
+                self.agent.Deplacement()
+                self.agent.Action()
 
-                # Free lock to release next thread
-                threadLock.release()
+            # Free lock to release next thread
+            threadLock.release()
 
-                # Temps d'attente entre les threads afin de mettre à jour l'intercade graphique
-                sleep(self.time_break)
-            self.bool = True
+            # Temps d'attente entre les threads afin de mettre à jour l'intercade graphique
+            sleep(self.time_break)
 
 
 

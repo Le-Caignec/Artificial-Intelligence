@@ -31,6 +31,8 @@ class Thread_Env(Thread):
             print(self.agent.x_position, self.agent.y_position)
             self.compteur += 1
 
+            sleep(self.time_break)
+
             # Free lock to release next thread
             threadLock.release()
 
