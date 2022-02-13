@@ -162,7 +162,7 @@ class Agent:
                 list_objectives = self.copy(self.objectif)
                 chosen_case = self.environnement.grid[int(key_chosen[0])][int(key_chosen[1])]
                 path.append(chosen_case)
-                note_path+=note_max - self.note_moy
+                note_path += note_max - self.note_moy
                 for el in path:
                     if el in list_objectives:
                         list_objectives.remove(el)
@@ -171,7 +171,7 @@ class Agent:
             # and the greedy_upgraded will be more accurate
             else:
                 path.append(case_opti)
-                note_path+=note_max - self.note_moy
+                note_path += note_max - self.note_moy
                 list_objectives.remove(case_opti)
         return path
 
@@ -181,14 +181,14 @@ class Agent:
         if len(self.mentalState) < sizeMentalState:
             path = self.AlgoNonInforme()
             print("----------------ALGO NON INFORME-----------------------")
-        else :
+        else:
             print("-------------------ALGO INFORME------------------------")
             path = self.greedy_upgraded()
         return path
     
     # when a new path is calculated, we update the mentale state with a new average note
     def UpdateMentalState(self):
-        self.mentalState.append((len(self.plan_action)-1,self.EvalPath(self.plan_action)))
+        self.mentalState.append((len(self.plan_action)-1, self.EvalPath(self.plan_action)))
         self.updateNoteMoy()
     
     # this function calculated the average note of the path

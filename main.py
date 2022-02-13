@@ -4,7 +4,7 @@ from agent.Agent import *
 from environement.Thread_Env import *
 from agent.Thread_Agent import *
 
-def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent, sizeMentalState):
+def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent, x):
     #creation de l'environement pour l'agent
     cli_environnement = CLI_Environnement()
     cli_environnement.GenerateNewGrid(proba)
@@ -32,12 +32,16 @@ def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent, sizeMentalState
 
 if __name__ == '__main__':
     ######### Variable Gloable ##########
+<<<<<<< Updated upstream
     Probability = 1/8
+=======
+    Probability = 1/3
+>>>>>>> Stashed changes
     Frequence = 5
     Time_Break = 3
     X_Posistion_Agent = 0
     Y_Posistion_Agent = 0
-    sizeMentalState = 5
+    sizeMentalState = 25
     ###################################
 
     Programme(Frequence, Probability, Time_Break, X_Posistion_Agent, Y_Posistion_Agent, sizeMentalState)
