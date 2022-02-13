@@ -24,8 +24,9 @@ class Thread_Env(Thread):
 
         if self.conteur % self.freq == 0:
             self.cli_environnement.GenerateNewGrid(self.proba)
+            self.cli_environnement.Afficher()
         self.GUI.GUI_PutAgent(self.agent.x_position, self.agent.y_position)
-        self.GUI.GUI_Display_Grid()
+        self.GUI.GUI_Display_Grid(self.cli_environnement.grid)
 
         # Free lock to release next thread
         threadLock.release()

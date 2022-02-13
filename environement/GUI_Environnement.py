@@ -81,11 +81,19 @@ class GUI_Environnement(Thread):
     def GUI_PutAgent(self, x_position, y_position):
         self.label_agent.grid(row=x_position+3, column=y_position, sticky=E, padx=10)
 
+    def GUI_Display_Grid(self, grid):
+        for x in range(5):
+            for y in range(5):
+                if grid[x][y].diamond:
+                    self.GUI_PutDiamond(x,y)
+                if grid[x][y].dust:
+                    self.GUI_PutDust(x,y)
+
     #Fonction lancée lorsque le thread est start()
     def run(self):
         print("je dessine mon interface")
-        #self.GUI_PutAgent(0, 0)
-        #self.GUI_PutDiamond(0, 0)
-        #self.GUI_PutDust(0, 0)
+        self.GUI_PutAgent(0, 0)
+        self.GUI_PutDiamond(0, 0)
+        self.GUI_PutDust(0, 0)
 
 
