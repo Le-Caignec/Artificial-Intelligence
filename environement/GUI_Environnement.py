@@ -70,14 +70,14 @@ class GUI_Environnement():
         label_diamond.config(width=50, height=30)
         label_diamond.image = self.photo_diamond
         label_diamond.grid(row=y_position+3, column=x_position, sticky=NW, padx=2, pady=8)
-        Label(self.fenetre, text="Diamond", fg='#043AFF').grid(row=y_position+3, column=x_position, sticky=NW, padx=2, pady=8)
+        #Label(self.fenetre, text="Diamond", fg='#043AFF').grid(row=y_position+3, column=x_position, sticky=NW, padx=2, pady=8)
 
     def GUI_PutDust(self, x_position, y_position):
         label_dust = Label(self.fenetre, image=self.photo_dust)
         label_dust.config(width=50, height=30)
         label_dust.image = self.photo_dust
         label_dust.grid(row=y_position+3, column=x_position, sticky=SW, padx=18, pady=18)
-        Label(self.fenetre, text="Dust", fg='#043AFF').grid(row=y_position+3, column=x_position, sticky=SW, padx=18, pady=18)
+        #Label(self.fenetre, text="Dust", fg='#043AFF').grid(row=y_position+3, column=x_position, sticky=SW, padx=18, pady=18)
 
     def GUI_PutAgent(self, x_position, y_position):
         self.label_agent.grid(row=y_position+3, column=x_position, sticky=E, padx=10)
