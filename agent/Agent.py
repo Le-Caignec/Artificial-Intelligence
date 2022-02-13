@@ -80,7 +80,7 @@ class Agent:
     def AlgoNonInforme(self):
         list_opti = [self.environnement.grid[self.x_position][self.y_position]]
         n = len(self.objectif)
-        list_objectives=self.copy(self.objectif)
+        list_objectives = self.copy(self.objectif)
         for i in range(n):
             obj_to_delete = list_objectives[0]
             distance_min = self.Distance(list_opti[-1], obj_to_delete)
@@ -178,9 +178,9 @@ class Agent:
     def ChoiceAlgo(self, sizeMentalState):
         if len(self.mentalState) < sizeMentalState:
             path = self.AlgoNonInforme()
-            print("----------------AGLO NON INFORME-----------------------")
+            print("----------------ALGO NON INFORME-----------------------")
         else :
-            print("-------------------AGLO INFORME------------------------")
+            print("-------------------ALGO INFORME------------------------")
             path = self.greedy_upgraded()
         return path
     

@@ -17,8 +17,8 @@ class Thread_Env(Thread):
     # Fonction lancée lorsque le thread est start()
     def run(self):
         while True:
-            threadLock = threading.Lock()
             # Get lock to synchronize threads
+            threadLock = threading.Lock()
             threadLock.acquire()
 
             if self.compteur % self.freq == 0:
@@ -28,9 +28,11 @@ class Thread_Env(Thread):
                 self.GUI.GUI_Display_Grid()
             self.GUI.GUI_Clear_Case(self.agent.x_position, self.agent.y_position)
             self.GUI.GUI_PutAgent(self.agent.x_position, self.agent.y_position)
+            print(self.agent.x_position, self.agent.y_position)
+            self.compteur += 1
+
             # Free lock to release next thread
             threadLock.release()
-            self.compteur += 1
 
             # Temps d'attente entre les threads afin de mettre à jour l'interface graphique
             sleep(self.time_break)

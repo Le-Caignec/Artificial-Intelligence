@@ -13,6 +13,7 @@ class Thread_Agent(Thread):
 
     #Fonction lancée lorsque le thread est start()
     def run(self):
+        self.agent.objectif = self.agent.Search_Objective()
         while True:
             if self.bool:
                 # Get lock to synchronize threads
@@ -31,12 +32,15 @@ class Thread_Agent(Thread):
                 else:
                     self.agent.Deplacement()
                     self.agent.Action()
+
                 # Free lock to release next thread
                 threadLock.release()
 
-        self.bool = True
-        # Temps d'attente entre les threads afin de mettre à jour l'intercade graphique
-        sleep(self.time_break)
+                # Temps d'attente entre les threads afin de mettre à jour l'intercade graphique
+                sleep(self.time_break)
+            self.bool = True
+
+
 
 
 
