@@ -1,6 +1,6 @@
 import threading
 from threading import *
-
+from time import *
 
 class Thread_Env(Thread):
 
@@ -24,8 +24,10 @@ class Thread_Env(Thread):
 
         if self.conteur % self.freq == 0:
             self.cli_environnement.GenerateNewGrid(self.proba)
+            self.GUI.GUI_Display_Grid()
         self.GUI.GUI_PutAgent(self.agent.x_position, self.agent.y_position)
-        self.GUI.GUI_Display_Grid()
 
+        # Temps d'attente entre les threads afin de mettre à jour l'intercade graphique
+        sleep(4)
         # Free lock to release next thread
         threadLock.release()

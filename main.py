@@ -1,6 +1,5 @@
 from environement.CLI_Environnement import *
 from environement.GUI_Environnement import *
-from time import *
 from agent.Agent import *
 from environement.Thread_Env import *
 from agent.Thread_Agent import *
@@ -9,33 +8,30 @@ def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent):
     #creation de l'environement pour l'agent
     cli_environnement = CLI_Environnement()
     cli_environnement.GenerateNewGrid(proba)
-    print(cli_environnement.grid)
+    cli_environnement.Afficher()
 
     #creation de l'agent
     agent = Agent(x_pos_agent, y_pos_agent, cli_environnement)
 
     #creation de l'interface graphique
-    #GUI = GUI_Environnement(cli_environnement)
-    #GUI.GUI_PutAgent(agent.x_position, agent.y_position)
-    #GUI.GUI_Display_Grid()
-    #GUI.fenetre.mainloop()
+    GUI = GUI_Environnement(cli_environnement)
+    GUI.GUI_PutAgent(agent.x_position, agent.y_position)
+    GUI.GUI_Display_Grid()
 
     # Creation des Threads
-    #conteur = 1
-    #thread_Agent = Thread_Agent(agent)
-    #thread_Env = Thread_Env(conteur, proba, freq, GUI, agent, cli_environnement)
+    conteur = 1
 
-    #for k in range(1):
+    for k in range(3):
         # Thread Agent
-        #thread_Agent.start()
+        thread_Agent = Thread_Agent(agent)
+        thread_Agent.start()
 
         # Thread Environnement
-        #thread_Env.start()
-        #conteur += 1
-        #thread_Env.SetCounteur(conteur)
+        thread_Env = Thread_Env(conteur, proba, freq, GUI, agent, cli_environnement)
+        thread_Env.start()
+        conteur += 1
 
-        # Temps d'attente entre les threads afin de mettre à jour l'intercade graphique
-        #sleep(time_break)
+    GUI.fenetre.mainloop()
 
 
 if __name__ == '__main__':
