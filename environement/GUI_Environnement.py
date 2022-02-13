@@ -89,3 +89,11 @@ class GUI_Environnement():
                     self.GUI_PutDiamond(x, y)
                 if self.cli_environnement.grid[x][y].dust:
                     self.GUI_PutDust(x, y)
+
+    def GUI_Clear(self):
+        self.CreatGrid()
+
+    def GUI_Clear_Case(self, x, y):
+        Frame(self.fenetre, width=200, height=120, borderwidth=2, relief=GROOVE).grid(row=y+3, column=x)
+
+

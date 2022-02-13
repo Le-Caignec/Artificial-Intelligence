@@ -18,17 +18,13 @@ def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent):
     GUI.GUI_PutAgent(agent.x_position, agent.y_position)
     GUI.GUI_Display_Grid()
 
-    # Creation des Threads
-    compteur = 1
-
     # Thread Agent
     thread_Agent = Thread_Agent(agent, time_break)
     thread_Agent.start()
 
     # Thread Environnement
-    thread_Env = Thread_Env(compteur, proba, freq, GUI, agent, cli_environnement, time_break)
+    thread_Env = Thread_Env(proba, freq, GUI, agent, cli_environnement, time_break)
     thread_Env.start()
-    compteur += 1
 
     GUI.fenetre.mainloop()
 

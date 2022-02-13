@@ -8,11 +8,12 @@ class Thread_Agent(Thread):
         Thread.__init__(self)
         self.agent = agent
         self.time_break = time_break
+        self.bool = False
 
     #Fonction lancée lorsque le thread est start()
     def run(self):
-        for k in range(3):
-            if k != 0:
+        while True:
+            if self.bool:
                 threadLock = threading.Lock()
                 # Get lock to synchronize threads
                 threadLock.acquire()
@@ -26,6 +27,7 @@ class Thread_Agent(Thread):
                 # Free lock to release next thread
                 threadLock.release()
                 # Temps d'attente entre les threads afin de mettre à jour l'intercade graphique
+            self.bool = True
             sleep(self.time_break)
 
 
