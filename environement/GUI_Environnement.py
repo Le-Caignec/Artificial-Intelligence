@@ -75,9 +75,9 @@ class GUI_Environnement(Thread):
         return collected_diamond, aspirated_dust, aspirated_diamond
     
     def UpdateScore(self, collected_diamond, aspirated_dust, aspirated_diamond):
-        self.collected_diamond_label = collected_diamond
-        self.aspirated_dust_label = aspirated_dust
-        self.aspirated_diamond_label = aspirated_diamond
+        self.collected_diamond_label['text'] = "Collected Diamond :" + str(collected_diamond)
+        self.aspirated_dust_label['text'] = "Aspirated Dust :" + str(aspirated_dust)
+        self.aspirated_diamond_label['text'] = "Aspirated Diamond :" + str(aspirated_diamond)
 
     def GUI_PutDiamond(self, x_position, y_position):
         label_diamond = Label(self.fenetre, image=self.photo_diamond)

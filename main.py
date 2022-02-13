@@ -32,12 +32,8 @@ def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent, x):
 
 if __name__ == '__main__':
     ######### Variable Gloable ##########
-<<<<<<< Updated upstream
-    Probability = 1/8
-=======
     Probability = 1/3
->>>>>>> Stashed changes
-    Frequence = 5
+    Frequence = 8
     Time_Break = 3
     X_Posistion_Agent = 0
     Y_Posistion_Agent = 0

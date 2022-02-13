@@ -29,7 +29,7 @@ class Thread_Env(Thread):
                 self.GUI.GUI_Display_Grid()
             self.GUI.GUI_Clear_Case(self.agent.x_position, self.agent.y_position)
             self.GUI.GUI_PutAgent(self.agent.x_position, self.agent.y_position)
-            print(self.agent.x_position, self.agent.y_position)
+            self.GUI.UpdateScore(self.agent.score.collected_diamond, self.agent.score.aspirated_dust, self.agent.score.aspirated_diamond)
             self.compteur += 1
 
             # Free lock to release next thread
