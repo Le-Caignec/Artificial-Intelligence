@@ -1,7 +1,5 @@
 from random import uniform
 from dataclasses import dataclass
-
-
 @dataclass
 class Case:
     x_position: int = 0
@@ -14,7 +12,7 @@ class Case:
 class CLI_Environnement:
 
     def __init__(self):
-        self.grid = [[Case(i, k) for i in range(5)] for k in range(5)]
+        self.grid = [[Case(k,i) for i in range(5)] for k in range(5)]
 
     def Afficher(self):
         print("-----------------GRILLE-------------------")
