@@ -215,3 +215,5 @@ class Agent:
             note += tuple[0]*tuple[1]
             n += tuple[0]
         self.note_moy = note/n
+        print("-----------------NOTE UPGRADED-------------------")
+        print("la nouvelle note est : " + str(self.note_moy))
