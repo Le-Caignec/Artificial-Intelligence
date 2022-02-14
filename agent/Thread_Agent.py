@@ -11,7 +11,7 @@ class Thread_Agent(Thread):
         self.sizeMentalState = sizeMentalState
         self.bool = False
 
-    #Fonction lancée lorsque le thread est start()
+    #Function that is run when the Thread Agent is start
     def run(self):
         while True:
             if self.bool:

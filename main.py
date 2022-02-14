@@ -1,29 +1,29 @@
-from environement.CLI_Environnement import *
-from environement.GUI_Environnement import *
+from environement.CLI_Environment import *
+from environement.GUI_Environment import *
 from agent.Agent import *
 from environement.Thread_Env import *
 from agent.Thread_Agent import *
 
 def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent, x):
-    #creation de l'environement pour l'agent
-    cli_environnement = CLI_Environnement()
+    #creation of the environment for the agent
+    cli_environnement = CLI_Environment()
     cli_environnement.GenerateNewGrid(proba)
-    cli_environnement.Afficher()
+    cli_environnement.DisplayGrid()
 
-    #creation de l'agent
+    #agent creation
     agent = Agent(x_pos_agent, y_pos_agent, cli_environnement)
     agent.Action()
 
-    #creation de l'interface graphique
-    GUI = GUI_Environnement(cli_environnement)
+    #creation of the graphical interface
+    GUI = GUI_Environment(cli_environnement)
     GUI.GUI_Display_Grid()
     GUI.GUI_PutAgent(agent.x_position, agent.y_position)
 
-    # Thread Environnement
+    #Thread Environment
     thread_Env = Thread_Env(proba, freq, GUI, agent, cli_environnement, time_break)
     thread_Env.start()
 
-    # Thread Agent
+    #Thread Agent
     thread_Agent = Thread_Agent(agent, time_break, sizeMentalState)
     thread_Agent.start()
 
@@ -31,13 +31,13 @@ def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent, x):
 
 
 if __name__ == '__main__':
-    ######### Variable Gloable ##########
+    ######### Gloable variable ##########
     Probability = 1/10
-    Frequence = 10
+    Frequency = 10
     Time_Break = 0.5
     X_Position_Agent = 0
     Y_Position_Agent = 0
     sizeMentalState = 10
     ###################################
 
-    Programme(Frequence, Probability, Time_Break, X_Position_Agent, Y_Position_Agent, sizeMentalState)
+    Programme(Frequency, Probability, Time_Break, X_Position_Agent, Y_Position_Agent, sizeMentalState)

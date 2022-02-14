@@ -9,29 +9,25 @@ class Score:
 
 class Agent:
 
-    def __init__(self, x_position, y_position, environnement):
+    def __init__(self, x_position, y_position, environment):
         self.x_position = x_position
         self.y_position = y_position
         self.mentalState = []
         self.note_moy = 0
         self.plan_action = []
-        self.environnement = environnement
+        self.environment = environment
         self.score = Score()
         self.objectif = self.Search_Objective()
-        self.captor = Captor(environnement)
+        self.captor = Captor(environment)
 
-    def AfficherAgent(self):
-        print("--------------AGENT-------------------")
-        print("- x_position : "+str(self.x_position))
-        print("- y_position : "+str(self.y_position))
-
+    #Function that enable to update the score when the agent :collected a diamond, aspirated a dust, aspirated a diamond
     def UpdateScore(self, score):
         self.score = score
 
-    #the function checks if there is something in and if it's the case it erases
+    #This function checks if there is something in and if it's the case it erases
     # it  from the grid and update the score
     def Action(self):
-        case = self.environnement.grid[self.x_position][self.y_position]
+        case = self.environment.grid[self.x_position][self.y_position]
         if case.dust:
             if case.diamond:
                 self.score.aspirated_diamond += 1
@@ -45,16 +41,14 @@ class Agent:
             if case in self.plan_action:
                 self.plan_action.remove(case)
             print("J'ai collecter un diamant !")
-        self.environnement.ClearCase(case.x_position, case.y_position)
+        self.environment.ClearCase(case.x_position, case.y_position)
 
-    #move the agent to a neighbour case in upgrading the position agent
+    #Move the agent to a neighbour case in upgrading his position
     def Deplacement(self):
         if self.plan_action != []:
             print("ma position est : x = " + str(self.x_position) + " et y = " + str(self.y_position))
             case_objectif = self.plan_action[0]
             bool = False
-            #l'agent se déplace d'une case à chaque appel de Deplacement()
-            #l'agent se déplace d'abord suivant les colonnes puis les lignes 
             if self.x_position < case_objectif.x_position:
                 self.x_position += 1
                 bool = True
@@ -75,10 +69,10 @@ class Agent:
         else:
             print("Inutile de se déplacer car la grille est vide : ni diamant, ni poussière")
 
-    #this function enable to search the all case in the grid which they have something inside
+    #This function enable to search the all case in the grid which they have something inside
     def Search_Objective(self):
         L = []
-        grid = self.environnement.grid
+        grid = self.environment.grid
         for x_pos in range(5):
             for y_pos in range(5):
                 case = grid[x_pos][y_pos]
@@ -96,7 +90,7 @@ class Agent:
     #this algorythm calculate the fastest way from the agent position
     #through all the case which have something in
     def AlgoNonInforme(self):
-        list_opti = [self.environnement.grid[self.x_position][self.y_position]]
+        list_opti = [self.environment.grid[self.x_position][self.y_position]]
         n = len(self.objectif)
         list_objectives = self.objectif
         for i in range(n):
@@ -115,7 +109,7 @@ class Agent:
     def greedy_upgraded(self):
         #initialisation
         n = len(self.objectif)
-        start_case = self.environnement.grid[self.x_position][self.y_position]
+        start_case = self.environment.grid[self.x_position][self.y_position]
         list_objectives = self.objectif
 
         #creation of the path with the start case at path[0]
@@ -129,7 +123,7 @@ class Agent:
 
         # we execute this programm until all the interesting case are visited
         while list_objectives != []:
-            # the note is calculated with the case note minus the Distance beetween where the agent is and the case
+            # the note is calculated with the case note minus the Distance between where the agent is and the case
             note_max = list_objectives[0].note - self.Distance(path[-1], list_objectives[0])
             case_opti = list_objectives[0]
             isLessMoy = False
@@ -151,13 +145,13 @@ class Agent:
                     Dict[str(obj.x_position)+str(obj.y_position)] = (path, note_path,  note_obj)
             
             # if isLessMoy is True, then the maximal note is inferior to the average note the heuristic has calculated
-            # In this case, the agent know he may have made a mistake before and check if there is a potentiel other path
+            # In this case, the agent know he may have made a mistake before and check if there is a potential other path
             # it is possible that after considering another path he come back to this one because he is the less wrong
             if isLessMoy:
                 # we begin with our path so that if nobody has a better note we keep on following the same path
                 key_chosen = str(case_opti.x_position)+str(case_opti.y_position)
                 for key in Dict:
-                    key_obj = self.environnement.grid[int(key[0])][int(key[1])]
+                    key_obj = self.environment.grid[int(key[0])][int(key[1])]
                     # we need to check that the case is not already in the path because it means it is the same path
                     # Dict[key][1] is the note_path of the corresponding key
                     # Dict[key][] is the note_max of the corresponding key (it means the note of the case we are considering - the distance)
@@ -165,17 +159,17 @@ class Agent:
                         key_chosen = key
                         note_max = Dict[key][2]
                 (path, note_path, note_max) = Dict[key_chosen]
-                # here we just recreate teh list-objectives because we possibly have chenged the path 
-                # So there may be objectives that we had visited and that we do not anymore so they have to be add to the list
+                # here we just recreate teh list-objectives because we possibly have changed the path
+                # So there may be objectives that we had visited and that we do not anymore, so they have to be add to the list
                 # to do so we just remove from a new copy of self.objectif all the objectives that are in the new path
                 list_objectives = self.objectif
-                chosen_case = self.environnement.grid[int(key_chosen[0])][int(key_chosen[1])]
+                chosen_case = self.environment.grid[int(key_chosen[0])][int(key_chosen[1])]
                 path.append(chosen_case)
                 note_path += note_max - self.note_moy
                 for el in path:
                     if el in list_objectives:
                         list_objectives.remove(el)
-            # if isLessMoy is False then we overestimated the average note so we are on the good path for now
+            # if isLessMoy is False then we overestimated the average note, so we are on the good path for now
             # if the average note is always too low, the heuristic will balanced it after the final path is calculated
             # and the greedy_upgraded will be more accurate
             else:
@@ -185,7 +179,7 @@ class Agent:
         path.pop(0)
         return path
 
-    # this function choose beetwen the informed algorythm and the non informed alogorythm
+    # this function choose between the informed algorythm and the uninformed algorithm
     # it depends on the size of the mental state and the size asked when the thread is starting
     def ChoiceAlgo(self, sizeMentalState):
         if len(self.mentalState) < sizeMentalState:
@@ -194,11 +188,9 @@ class Agent:
         else:
             print("-------------------ALGO INFORME------------------------")
             path = self.greedy_upgraded()
-            print(path)
-            print(self.note_moy)
         return path
     
-    # when a new path is calculated, we update the mentale state with a new average note
+    # when a new path is calculated, we update the mental state with a new average note
     def UpdateMentalState(self):
         self.mentalState.append((len(self.plan_action)-1, self.EvalPath(self.plan_action)))
         self.updateNoteMoy()

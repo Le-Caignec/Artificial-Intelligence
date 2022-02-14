@@ -4,9 +4,9 @@ from time import *
 
 class Thread_Env(Thread):
 
-    def __init__(self, proba, freq, GUI, agent, cli_environnement, time_break):
+    def __init__(self, proba, freq, GUI, agent, cli_environment, time_break):
         Thread.__init__(self)
-        self.cli_environnement = cli_environnement
+        self.cli_environment = cli_environment
         self.agent = agent
         self.GUI = GUI
         self.proba = proba
@@ -14,7 +14,7 @@ class Thread_Env(Thread):
         self.compteur = 1
         self.time_break = time_break
 
-    # Fonction lancée lorsque le thread est start()
+    #Function that is run when the Thread Environment is start
     def run(self):
         while True:
             # Get lock to synchronize threads
@@ -22,9 +22,8 @@ class Thread_Env(Thread):
             threadLock.acquire()
 
             if self.compteur % self.freq == 0:
-                print("generate new grid")
-                self.cli_environnement.GenerateNewGrid(self.proba)
-                self.cli_environnement.Afficher()
+                self.cli_environment.GenerateNewGrid(self.proba)
+                self.cli_environment.DisplayGrid()
                 self.GUI.GUI_Clear()
                 self.GUI.GUI_Display_Grid()
             self.GUI.GUI_Clear_Case(self.agent.x_position, self.agent.y_position)
@@ -35,5 +34,5 @@ class Thread_Env(Thread):
             # Free lock to release next thread
             threadLock.release()
 
-            # Temps d'attente entre les threads afin de mettre à jour l'interface graphique
+            # Wait time between threads to update GUI
             sleep(self.time_break)

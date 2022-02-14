@@ -1,12 +1,13 @@
 
 class Captor:
 
-    def __init__(self, cli_envirennement):
-        self.cli_envirennement = cli_envirennement
+    def __init__(self, cli_environment):
+        self.cli_environment = cli_environment
 
+    #Function that will detect and inform the agent if the environment has changed
     def Detect_New_Env(self):
-        if self.cli_envirennement.isNew:
-            self.cli_envirennement.isNew = False
+        if self.cli_environment.isNew:
+            self.cli_environment.isNew = False
             return True
         else:
             return False

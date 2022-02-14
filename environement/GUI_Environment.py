@@ -3,11 +3,11 @@ from tkinter import *
 from PIL import Image, ImageTk
 
 
-class GUI_Environnement(Thread):
+class GUI_Environment(Thread):
 
-    def __init__(self, cli_environnement):
+    def __init__(self, cli_environment):
         self.fenetre = Tk()
-        self.cli_environnement = cli_environnement
+        self.cli_environment = cli_environment
         self.label_agent = None
         self.photo_diamond, self.photo_dust, self.label_agent = None, None, None
         self.gui_grid = [[0 for k in range(5)]for k in range(5)]
@@ -32,15 +32,15 @@ class GUI_Environnement(Thread):
         win.geometry('{}x{}+{}+{}'.format(width, height, x, y))
 
     def LoadImage(self):
-        # Creation de l'objet image Diamond
+        # Creating the Diamond image object
         image_diamond = Image.open('ressources/diamant.png').resize((60, 45), Image.ANTIALIAS)
         self.photo_diamond = ImageTk.PhotoImage(image_diamond)
-        # Creation de l'objet image Dust
+        # Creating the Dust image object
         image_dust = Image.open('ressources/pierre.png').resize((50, 40), Image.ANTIALIAS)
         self.photo_dust = ImageTk.PhotoImage(image_dust)
 
     def Creat_Agent_GUI(self):
-        # Creation de l'objet image Agent
+        # Creation of the image Agent object
         image_agent = Image.open("ressources/agent.png").resize((50, 50), Image.ANTIALIAS)
         photo_agent = ImageTk.PhotoImage(image_agent)
         label_agent = Label(self.fenetre, image=photo_agent)
@@ -95,9 +95,9 @@ class GUI_Environnement(Thread):
     def GUI_Display_Grid(self):
         for x in range(5):
             for y in range(5):
-                if self.cli_environnement.grid[x][y].diamond:
+                if self.cli_environment.grid[x][y].diamond:
                     self.gui_grid[x][y][0].grid()
-                if self.cli_environnement.grid[x][y].dust:
+                if self.cli_environment.grid[x][y].dust:
                     self.gui_grid[x][y][1].grid()
 
     def GUI_Clear(self):
