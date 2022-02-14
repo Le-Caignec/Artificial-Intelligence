@@ -48,6 +48,8 @@ class Agent:
                 
     def Deplacement(self):
         if self.plan_action != []:
+            print("--------Je me déplace---------")
+            print("ma position est : x = " + str(self.x_position) + " et y = " + str(self.y_position))
             case_objectif = self.plan_action[0]
             #l'agent se déplace d'une case à chaque appel de Deplacement()
             #l'agent se déplace d'abord suivant les colonnes puis les lignes 
@@ -173,6 +175,7 @@ class Agent:
                 path.append(case_opti)
                 note_path += note_max - self.note_moy
                 list_objectives.remove(case_opti)
+        path.pop(0)
         return path
 
     # this function choose beetwen the informed algorythm and the non informed alogorythm
@@ -184,6 +187,8 @@ class Agent:
         else:
             print("-------------------ALGO INFORME------------------------")
             path = self.greedy_upgraded()
+            print(path)
+            print(self.note_moy)
         return path
     
     # when a new path is calculated, we update the mentale state with a new average note

@@ -32,14 +32,12 @@ def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent, x):
 
 if __name__ == '__main__':
     ######### Variable Gloable ##########
-    Probability = 1/3
-    Frequence = 8
-    Time_Break = 3
+    Probability = 1/10
+    Frequence = 10
+    Time_Break = 0.5
     X_Posistion_Agent = 0
     Y_Posistion_Agent = 0
-    sizeMentalState = 25
+    sizeMentalState = 2
     ###################################
 
     Programme(Frequence, Probability, Time_Break, X_Posistion_Agent, Y_Posistion_Agent, sizeMentalState)
-
-

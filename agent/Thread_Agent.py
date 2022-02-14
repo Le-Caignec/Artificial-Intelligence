@@ -20,7 +20,6 @@ class Thread_Agent(Thread):
             if self.bool:
                 if self.agent.captor.Detect_New_Env():
                     self.agent.objectif = self.agent.Search_Objective()
-                    self.agent.Action()
                     self.agent.plan_action = self.agent.ChoiceAlgo(self.sizeMentalState)
                     self.agent.UpdateMentalState()
                     self.agent.Deplacement()
@@ -34,7 +33,3 @@ class Thread_Agent(Thread):
             self.bool = True
             # Temps d'attente entre les threads afin de mettre à jour l'intercade graphique
             sleep(self.time_break)
-
-
-
-
