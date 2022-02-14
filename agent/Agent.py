@@ -47,7 +47,6 @@ class Agent:
                 
     def Deplacement(self):
         if self.plan_action != []:
-            print("--------Je me déplace---------")
             print("ma position est : x = " + str(self.x_position) + " et y = " + str(self.y_position))
             case_objectif = self.plan_action[0]
             bool = False
@@ -67,7 +66,7 @@ class Agent:
                     self.y_position -= 1
                     bool = True
             if bool:
-                print("j'avance !")
+                print("Je me déplace !")
             else:
                 print("je reste dans ma case")
         else:
