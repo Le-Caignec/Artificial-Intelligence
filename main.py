@@ -6,21 +6,21 @@ from agent.Thread_Agent import *
 
 def Programme(freq, proba, time_break, x_pos_agent, y_pos_agent, x):
     #creation of the environment for the agent
-    cli_environnement = CLI_Environment()
-    cli_environnement.GenerateNewGrid(proba)
-    cli_environnement.DisplayGrid()
+    cli_environment = CLI_Environment()
+    cli_environment.GenerateNewGrid(proba)
+    cli_environment.DisplayGrid()
 
     #agent creation
-    agent = Agent(x_pos_agent, y_pos_agent, cli_environnement)
+    agent = Agent(x_pos_agent, y_pos_agent, cli_environment)
     agent.Action()
 
     #creation of the graphical interface
-    GUI = GUI_Environment(cli_environnement)
+    GUI = GUI_Environment(cli_environment)
     GUI.GUI_Display_Grid()
     GUI.GUI_PutAgent(agent.x_position, agent.y_position)
 
     #Thread Environment
-    thread_Env = Thread_Env(proba, freq, GUI, agent, cli_environnement, time_break)
+    thread_Env = Thread_Env(proba, freq, GUI, agent, cli_environment, time_break)
     thread_Env.start()
 
     #Thread Agent
