@@ -35,7 +35,6 @@ class GUI_Environnement(Thread):
         # Creation de l'objet image Diamond
         image_diamond = Image.open('ressources/diamant.png').resize((60, 45), Image.ANTIALIAS)
         self.photo_diamond = ImageTk.PhotoImage(image_diamond)
-
         # Creation de l'objet image Dust
         image_dust = Image.open('ressources/pierre.png').resize((50, 40), Image.ANTIALIAS)
         self.photo_dust = ImageTk.PhotoImage(image_dust)
@@ -63,15 +62,12 @@ class GUI_Environnement(Thread):
         #Collected Diamond
         collected_diamond = Label(self.fenetre, text="Collected Diamond : 0", fg='#043AFF')
         collected_diamond.grid(row=0, column=0, columnspan=5, sticky=NW)
-
         #Aspirated Dust
         aspirated_dust = Label(self.fenetre, text="Aspirated Dust : 0", fg='#043AFF')
         aspirated_dust.grid(row=1, column=0, columnspan=5, sticky=NW)
-
         #Aspirated Diamond
         aspirated_diamond = Label(self.fenetre, text="Aspirated Diamond : 0", fg='#043AFF')
         aspirated_diamond.grid(row=2, column=0, columnspan=5, sticky=NW)
-
         return collected_diamond, aspirated_dust, aspirated_diamond
     
     def UpdateScore(self, collected_diamond, aspirated_dust, aspirated_diamond):

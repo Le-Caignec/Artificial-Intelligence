@@ -119,7 +119,6 @@ class Agent:
         # Dict is a dictionary that keep the note of old path that could be better than the actual path we are taking
         Dict = {}
         Dict[str(start_case.x_position)+str(start_case.y_position)] = (path, note_path, start_case.note)
-        
 
         # we execute this programm until all the interesting case are visited
         while list_objectives != []:
