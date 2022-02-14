@@ -27,7 +27,9 @@ class Agent:
 
     def UpdateScore(self, score):
         self.score = score
-        
+
+    #the function checks if there is something in and if it's the case it erases
+    # it  from the grid and update the score
     def Action(self):
         case = self.environnement.grid[self.x_position][self.y_position]
         if case.dust:
@@ -44,7 +46,8 @@ class Agent:
                 self.plan_action.remove(case)
             print("J'ai collecter un diamant !")
         self.environnement.ClearCase(case.x_position, case.y_position)
-                
+
+    #move the agent to a neighbour case in upgrading the position agent
     def Deplacement(self):
         if self.plan_action != []:
             print("ma position est : x = " + str(self.x_position) + " et y = " + str(self.y_position))
@@ -71,7 +74,8 @@ class Agent:
                 print("je reste dans ma case")
         else:
             print("Inutile de se déplacer car la grille est vide : ni diamant, ni poussière")
-       
+
+    #this function enable to search the all case in the grid which they have something inside
     def Search_Objective(self):
         L = []
         grid = self.environnement.grid
@@ -81,13 +85,16 @@ class Agent:
                 if case.dust or case.diamond:
                     L.append(case)
         return L
-    
+
+    #this function enable to calcul the distance between two cases in the grid
     def Distance(self, start_case, final_case):
         distance_x = abs(start_case.x_position - final_case.x_position)
         distance_y = abs(start_case.y_position - final_case.y_position)
         distance = distance_x + distance_y
         return distance
-    
+
+    #this algorythm calculate the fastest way from the agent position
+    #through all the case which have something in
     def AlgoNonInforme(self):
         list_opti = [self.environnement.grid[self.x_position][self.y_position]]
         n = len(self.objectif)
