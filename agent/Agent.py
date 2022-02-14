@@ -13,7 +13,7 @@ class Agent:
         self.x_position = x_position
         self.y_position = y_position
         self.mentalState = []
-        self.note_moy = 0
+        self.average_note = 0
         self.plan_action = []
         self.environment = environment
         self.score = Score()
@@ -89,7 +89,7 @@ class Agent:
 
     #this algorythm calculate the fastest way from the agent position
     #through all the case which have something in
-    def AlgoNonInforme(self):
+    def AlgoNotInformed(self):
         list_opti = [self.environment.grid[self.x_position][self.y_position]]
         n = len(self.objectif)
         list_objectives = self.objectif
@@ -106,7 +106,7 @@ class Agent:
         list_opti.pop(0)
         return list_opti
 
-    def greedy_upgraded(self):
+    def AlgoInformed(self):
         #initialisation
         n = len(self.objectif)
         start_case = self.environment.grid[self.x_position][self.y_position]
@@ -115,7 +115,7 @@ class Agent:
         #creation of the path with the start case at path[0]
         #it is known that there is nothing on the start case
         path = [start_case]
-        note_path = start_case.note + n*self.note_moy
+        note_path = start_case.note + n*self.average_note
 
         # Dict is a dictionary that keep the note of old path that could be better than the actual path we are taking
         Dict = {}
@@ -130,14 +130,14 @@ class Agent:
             for obj in list_objectives:
                 note_obj = obj.note - self.Distance(path[-1], obj)
                 # we check if the note is less than the average note
-                if note_obj < self.note_moy:
+                if note_obj < self.average_note:
                     # we actualise the obj only if he has a better note than the actual case
                     if note_obj > note_max:
                         note_max = note_obj
                         case_opti = obj
                         isLessMoy = True
                     Dict[str(obj.x_position)+str(obj.y_position)] = (path, note_path, note_obj)
-                if note_obj >= self.note_moy:
+                if note_obj >= self.average_note:
                     if note_obj > note_max:
                         note_max = note_obj
                         case_opti = obj
@@ -165,7 +165,7 @@ class Agent:
                 list_objectives = self.objectif
                 chosen_case = self.environment.grid[int(key_chosen[0])][int(key_chosen[1])]
                 path.append(chosen_case)
-                note_path += note_max - self.note_moy
+                note_path += note_max - self.average_note
                 for el in path:
                     if el in list_objectives:
                         list_objectives.remove(el)
@@ -174,7 +174,7 @@ class Agent:
             # and the greedy_upgraded will be more accurate
             else:
                 path.append(case_opti)
-                note_path += note_max - self.note_moy
+                note_path += note_max - self.average_note
                 list_objectives.remove(case_opti)
         path.pop(0)
         return path
@@ -183,24 +183,24 @@ class Agent:
     # it depends on the size of the mental state and the size asked when the thread is starting
     def ChoiceAlgo(self, sizeMentalState):
         if len(self.mentalState) < sizeMentalState:
-            path = self.AlgoNonInforme()
+            path = self.AlgoNotInformed()
             print("----------------ALGO NON INFORME-----------------------")
         else:
             print("-------------------ALGO INFORME------------------------")
-            path = self.greedy_upgraded()
+            path = self.AlgoInformed()
         return path
     
     # when a new path is calculated, we update the mental state with a new average note
     def UpdateMentalState(self):
-        self.mentalState.append((len(self.plan_action)-1, self.EvalPath(self.plan_action)))
-        self.updateNoteMoy()
+        self.mentalState.append((len(self.plan_action)-1, self.AssesPath(self.plan_action)))
+        self.updateAverageNote()
     
     # this function calculated the average note of the path
-    def EvalPath(self, path):
+    def AssesPath(self, path):
         startcase = self.environment.grid[self.x_position][self.y_position]
         n = len(path)
         if n==0:
-            return self.note_moy
+            return self.average_note
         noteMoy = 0
         for obj in path:
             if obj != startcase:
@@ -210,12 +210,12 @@ class Agent:
         return noteMoy
     
     #this function just re calculate the global average note
-    def updateNoteMoy(self):
+    def updateAverageNote(self):
         note = 0
         n = 0
         for tuple in self.mentalState:
             note += tuple[0]*tuple[1]
             n += tuple[0]
-        self.note_moy = note/n
+        self.average_note = note/n
         print("-----------------NOTE UPGRADED-------------------")
-        print("la nouvelle note est : " + str(self.note_moy))
+        print("la nouvelle note est : " + str(self.average_note))
