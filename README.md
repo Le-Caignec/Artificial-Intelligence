@@ -2,7 +2,7 @@
 
 # Intelligence Artificielle
 
-Vous êtes un programmeur engagé dans une entreprise qui construit des robots dotés d'intelligence artificielle pour les activités ménagères. Son noveau projet est de développer un agent intelligent qui composera un aspirateur robot. L'agent/robot s'appellera Aspirobot T-0.1 et ses objectifs sont d'aspirer la poussière d'une résidence et de récupérer les bijoux perdus sur le sol.
+Dans le cadre de se projer, on se considèrera comme un programmeur engagé dans une entreprise qui construit des robots dotés d'une intelligence artificielle pour les activités ménagères. Notre noveau projet est de développer un agent intelligent qui composera un aspirateur robot. L'agent/robot s'appellera Aspirobot T-0.1 et ses objectifs sont d'aspirer la poussière d'une résidence et de récupérer les bijoux perdus sur le sol.
 
 ### Détail de l'environement
 
