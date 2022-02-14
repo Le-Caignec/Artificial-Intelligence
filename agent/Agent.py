@@ -154,7 +154,7 @@ class Agent:
                     key_obj = self.environment.grid[int(key[0])][int(key[1])]
                     # we need to check that the case is not already in the path because it means it is the same path
                     # Dict[key][1] is the note_path of the corresponding key
-                    # Dict[key][] is the note_max of the corresponding key (it means the note of the case we are considering - the distance)
+                    # Dict[key][2] is the note_max of the corresponding key (it means the note of the case we are considering - the distance)
                     if key_obj not in path and Dict[key][1]+Dict[key][2] > note_path + note_max:
                         key_chosen = key
                         note_max = Dict[key][2]
