@@ -203,7 +203,7 @@ class Agent:
         for obj in path:
             if obj != startcase:
                 noteMoy += obj.note - self.Distance(startcase, obj)
-        noteMoy = noteMoy / (n-1)
+        noteMoy = noteMoy / n
         return noteMoy
     
     #this function just re calculate the global average note
