@@ -91,7 +91,7 @@ class Agent:
     def AlgoNonInforme(self):
         list_opti = [self.environnement.grid[self.x_position][self.y_position]]
         n = len(self.objectif)
-        list_objectives = self.copy(self.objectif)
+        list_objectives = self.objectif
         for i in range(n):
             obj_to_delete = list_objectives[0]
             distance_min = self.Distance(list_opti[-1], obj_to_delete)
@@ -105,17 +105,11 @@ class Agent:
         list_opti.pop(0)
         return list_opti
 
-    def copy(self, list):
-        new_list = []
-        for el in list:
-            new_list.append(el)
-        return new_list
-
     def greedy_upgraded(self):
         #initialisation
         n = len(self.objectif)
         start_case = self.environnement.grid[self.x_position][self.y_position]
-        list_objectives = self.copy(self.objectif)
+        list_objectives = self.objectif
 
         #creation of the path with the start case at path[0]
         #it is known that there is nothing on the start case
@@ -168,7 +162,7 @@ class Agent:
                 # here we just recreate teh list-objectives because we possibly have chenged the path 
                 # So there may be objectives that we had visited and that we do not anymore so they have to be add to the list
                 # to do so we just remove from a new copy of self.objectif all the objectives that are in the new path
-                list_objectives = self.copy(self.objectif)
+                list_objectives = self.objectif
                 chosen_case = self.environnement.grid[int(key_chosen[0])][int(key_chosen[1])]
                 path.append(chosen_case)
                 note_path += note_max - self.note_moy
