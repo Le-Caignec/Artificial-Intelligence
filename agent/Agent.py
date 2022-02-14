@@ -197,12 +197,15 @@ class Agent:
     
     # this function calculated the average note of the path
     def EvalPath(self, path):
-        startcase = path[0]
+        startcase = self.environment.grid[self.x_position][self.y_position]
         n = len(path)
+        if n==0:
+            return self.note_moy
         noteMoy = 0
         for obj in path:
             if obj != startcase:
                 noteMoy += obj.note - self.Distance(startcase, obj)
+                startcase = obj
         noteMoy = noteMoy / n
         return noteMoy
     
