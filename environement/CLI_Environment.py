@@ -80,11 +80,11 @@ class CLI_Environment:
     # improve the decision of the informed algorithm
     def Evaluation(self, case):
         if case.dust:
-            case.note = 15
+            case.note = 6.6
             if case.diamond:
-                case.note = 10
+                case.note = 4.3
         elif case.diamond:
-            case.note = 20
+            case.note = 7.0
 
     # Diamond Setter
     def SetDiamond(self, x, y):
