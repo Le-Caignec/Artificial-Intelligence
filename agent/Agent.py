@@ -30,7 +30,6 @@ class Agent:
         
     def Action(self):
         case = self.environnement.grid[self.x_position][self.y_position]
-        print("--------------------ACTION---------------")
         if case.dust:
             if case.diamond:
                 self.score.aspirated_diamond += 1
@@ -51,17 +50,26 @@ class Agent:
             print("--------Je me déplace---------")
             print("ma position est : x = " + str(self.x_position) + " et y = " + str(self.y_position))
             case_objectif = self.plan_action[0]
+            bool = False
             #l'agent se déplace d'une case à chaque appel de Deplacement()
             #l'agent se déplace d'abord suivant les colonnes puis les lignes 
             if self.x_position < case_objectif.x_position:
                 self.x_position += 1
+                bool = True
             elif self.x_position > case_objectif.x_position:
                 self.x_position -= 1
+                bool = True
             else:
                 if self.y_position < case_objectif.y_position:
                     self.y_position += 1
+                    bool = True
                 elif self.y_position > case_objectif.y_position:
                     self.y_position -= 1
+                    bool = True
+            if bool:
+                print("j'avance !")
+            else:
+                print("je reste dans ma case")
         else:
             print("Inutile de se déplacer car la grille est vide : ni diamant, ni poussière")
        
@@ -117,7 +125,7 @@ class Agent:
 
         # Dict is a dictionary that keep the note of old path that could be better than the actual path we are taking
         Dict = {}
-        Dict[str(start_case.x_position)+str(start_case.y_position)]=(path,note_path,start_case.note)
+        Dict[str(start_case.x_position)+str(start_case.y_position)] = (path, note_path, start_case.note)
         
 
         # we execute this programm until all the interesting case are visited
@@ -135,13 +143,13 @@ class Agent:
                         note_max = note_obj
                         case_opti = obj
                         isLessMoy = True
-                    Dict[str(obj.x_position)+str(obj.y_position)]=(path,note_path, note_obj)
+                    Dict[str(obj.x_position)+str(obj.y_position)] = (path, note_path, note_obj)
                 if note_obj >= self.note_moy:
                     if note_obj > note_max:
                         note_max = note_obj
                         case_opti = obj
                         isLessMoy = False
-                    Dict[str(obj.x_position)+str(obj.y_position)]=(path, note_path,  note_obj)
+                    Dict[str(obj.x_position)+str(obj.y_position)] = (path, note_path,  note_obj)
             
             # if isLessMoy is True, then the maximal note is inferior to the average note the heuristic has calculated
             # In this case, the agent know he may have made a mistake before and check if there is a potentiel other path

@@ -14,22 +14,26 @@ class Thread_Agent(Thread):
     #Fonction lancée lorsque le thread est start()
     def run(self):
         while True:
-            # Get lock to synchronize threads
-            threadLock = threading.Lock()
-            threadLock.acquire()
             if self.bool:
+                # Get lock to synchronize threads
+                threadLock = threading.Lock()
+                threadLock.acquire()
+
                 if self.agent.captor.Detect_New_Env():
                     self.agent.objectif = self.agent.Search_Objective()
                     self.agent.plan_action = self.agent.ChoiceAlgo(self.sizeMentalState)
+                    print("---------Plan d'action-------------")
+                    print(self.agent.plan_action)
                     self.agent.UpdateMentalState()
+                    self.agent.Action()
                     self.agent.Deplacement()
                     self.agent.Action()
                 else:
                     self.agent.Deplacement()
                     self.agent.Action()
 
-            # Free lock to release next thread
-            threadLock.release()
+                # Free lock to release next thread
+                threadLock.release()
             self.bool = True
-            # Temps d'attente entre les threads afin de mettre à jour l'intercade graphique
+            # Temps d'attente entre les threads afin de mettre à jour l'interface graphique
             sleep(self.time_break)
