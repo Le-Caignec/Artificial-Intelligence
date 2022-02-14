@@ -49,25 +49,25 @@ class GUI_Environment(Thread):
         return label_agent
 
     def CreatGrid(self):
-        for row in range(3, 8):
+        for row in range(1, 6):
             for column in range(5):
                 Frame(self.fenetre, width=200, height=120, borderwidth=2, relief=GROOVE).grid(row=row, column=column)
                 label_dust = self.GUI_PutDust(column, row)
                 label_diamond = self.GUI_PutDiamond(column, row)
-                self.gui_grid[column][row-3] = [label_diamond, label_dust]
+                self.gui_grid[column][row-1] = [label_diamond, label_dust]
                 label_dust.grid_remove()
                 label_diamond.grid_remove()
 
     def Score(self):
         #Collected Diamond
         collected_diamond = Label(self.fenetre, text="Collected Diamond : 0", fg='#043AFF')
-        collected_diamond.grid(row=0, column=0, columnspan=5, sticky=NW)
+        collected_diamond.grid(row=0, column=1, columnspan=1, sticky=NW)
         #Aspirated Dust
         aspirated_dust = Label(self.fenetre, text="Aspirated Dust : 0", fg='#043AFF')
-        aspirated_dust.grid(row=1, column=0, columnspan=5, sticky=NW)
+        aspirated_dust.grid(row=0, column=2, columnspan=1, sticky=NW)
         #Aspirated Diamond
         aspirated_diamond = Label(self.fenetre, text="Aspirated Diamond : 0", fg='#043AFF')
-        aspirated_diamond.grid(row=2, column=0, columnspan=5, sticky=NW)
+        aspirated_diamond.grid(row=0, column=3, columnspan=1, sticky=NW)
         return collected_diamond, aspirated_dust, aspirated_diamond
     
     def UpdateScore(self, collected_diamond, aspirated_dust, aspirated_diamond):
@@ -90,7 +90,7 @@ class GUI_Environment(Thread):
         return label_dust
 
     def GUI_PutAgent(self, x_position, y_position):
-        self.label_agent.grid(row=y_position+3, column=x_position, sticky=E, padx=10)
+        self.label_agent.grid(row=y_position+1, column=x_position, sticky=E, padx=10)
 
     def GUI_Display_Grid(self):
         for x in range(5):
