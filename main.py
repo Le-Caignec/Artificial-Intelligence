@@ -34,7 +34,7 @@ if __name__ == '__main__':
     ######### Gloable variable ##########
     Probability = 1/10
     Frequency = 10
-    Time_Break = 1
+    Time_Break = 0.5
     X_Position_Agent = 0
     Y_Position_Agent = 0
     sizeMentalState = 10
